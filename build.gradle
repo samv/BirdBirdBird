@@ -42,6 +42,7 @@ dependencies {
     //androidTestCompile 'org.robolectric:robolectric:2.+'
     //androidTestCompile 'junit:junit:4.+'
 
+    compile project(':ext:ActiveAndroid')
 }
 
 android {
