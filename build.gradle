@@ -4,31 +4,13 @@
 *	https://github.com/Nodeclipse/nodeclipse-1/blob/master/org.nodeclipse.enide.editors.gradle/docs/android/build.gradle
 * Gradle Plugin User Guide:
 *	http://tools.android.com/tech-docs/new-build-system/user-guide
-* Usage
-*	1. put in project root
-*	2. check version numbers
-*	3. use from command line or with Gradle for Android	http://marketplace.eclipse.org/content/gradle
-* Support for this template
-*	https://github.com/nodeclipse/nodeclipse-1/issues/
-* History
-*	2014-03-13 android plugin updated to 0.9, see http://tools.android.com/tech-docs/new-build-system/migrating_to_09
-*	2014-04-01 check for gradle version
-*	2014-04-10 wrapper and runAndroidApplication tasks
-*	2014-04-25 rename to run, add <<
-*	2014-05-23 defaut plugin version 0.10.x
-*	2014-06-06 show "boilerplate part"	
-*	2014-06-17 defaut plugin version 0.11.x, requires buildToolsVersion "19.1.0"
-*	2014-06-18 add gradle-android-command-plugin
-* @author Paul Verest 
 */
 println GradleVersion.current().prettyPrint()
-assert gradle.gradleVersion >= "1.10" // android plugin 0.10 requires Gradle 1.10, 1.11, 1.12
-// after `gradle wrapper` it is possible to use './gradlew build' with Gradle version specified
+assert gradle.gradleVersion >= "1.10"
 task wrapper(type: Wrapper) {
     gradleVersion = '1.12'
 }
 
-//{ "boilerplate part", possible extentions are commented
 buildscript {
     repositories {
         mavenCentral()
@@ -43,23 +25,23 @@ buildscript {
 apply plugin: 'android'
 
 dependencies {
+    repositories {
+        mavenCentral()
+        //jcenter()
+    }
     compile fileTree(dir: 'libs', include: '*.jar')
     
-    // to use appcomat: in SDK Manager install/update Extras / Android Support Repository
-    // or from command line
-    //	android list sdk
-    //	android update sdk --no-ui --filter <number>
-    //compile 'com.android.support:appcompat-v7:19.+'
+    // support old devices!  :D
+    // compile 'com.android.support:support-v4:18.0.+'
+    // compile 'com.android.support:support-v7:18.0.+'
 
-    // for multi-module project build (needs `settings.gradle`): 
-    // reference needed modules or App under test (for Eclipse Android Test project)
-    //compile project(':Module')
+    compile 'com.google.code.gson:gson:2.2.4'
 
-    //androidTestCompile 'com.jayway.android.robotium:robotium-solo:4.3.1'
-    
     // http://blog.futurice.com/android_unit_testing_in_ides_and_ci_environments
+    //androidTestCompile 'as.streamed.test:streamtest-solo:0.1'
     //androidTestCompile 'org.robolectric:robolectric:2.+'
     //androidTestCompile 'junit:junit:4.+'
+
 }
 
 android {
