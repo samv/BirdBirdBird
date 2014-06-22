@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Streamed.As</string>
+
+    <string name="action_login">Log in</string>
+    <string name="action_logout">Log out</string>
+    <string name="action_compose">Compose</string>
+    <string name="action_about">About</string>
+
+    <string name="label_login">Log in with Twitter</string>
+
+    <string name="title_stream">Streamed.As Stream</string>
+
 </resources>

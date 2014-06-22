@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+  <item
+     android:id="@+id/miLogin"
+     android:orderInCategory="20"
+     android:showAsAction="never"
+     android:title="@string/action_login"
+     />
+
+  <item
+     android:id="@+id/miAbout"
+     android:orderInCategory="100"
+     android:showAsAction="never"
+     android:title="@string/action_about"
+     />
+
+</menu>
