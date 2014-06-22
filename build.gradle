@@ -53,9 +53,10 @@ dependencies {
     //compile project(':ext:scribe-java')
 
     // http://blog.futurice.com/android_unit_testing_in_ides_and_ci_environments
-    //androidTestCompile 'as.streamed.test:streamtest-solo:0.1'
-    //androidTestCompile 'junit:junit:4.+'
-    //androidTestCompile 'org.skyscreamer:jsonassert:1.2.3'
+    //androidTestCompile fileTree(dir: 'tests', include: '*.java')
+    androidTestCompile 'junit:junit:4.+'
+    androidTestCompile 'org.skyscreamer:jsonassert:1.2.3'
+    androidTestCompile files("$project.buildDir/classes/debug")
 }
 
 android {
@@ -73,15 +74,10 @@ android {
             assets.srcDirs = ['assets']
         }
 
-        // Move the tests to tests/java, tests/res, etc...
         androidTest.setRoot('tests')
 
-        // Move the build types to build-types/<type>
-        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
-        // This moves them out of them default location under src/<type>/... which would
-        // conflict with src/ being used by the main source set.
-        // Adding new build types or product flavors should be accompanied
-        // by a similar customization.
+        // Move the tests to tests/java, tests/res, etc...
+        //androidTest.setRoot('tests')
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
@@ -91,7 +87,15 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
+	exclude 'LICENSE.txt'
     }
+
+    defaultConfig {
+        testApplicationId "as.streamed.test"
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+        testFunctionalTest true
+    }
+
 }
 
 //} "boilerplate part"

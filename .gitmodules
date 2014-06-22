@@ -4,3 +4,22 @@
 [submodule "Scribe"]
 	path = ext/scribe-java
 	url = https://github.com/fernandezpablo85/scribe-java
+[submodule "ext/commons-io"]
+	path = ext/commons-io
+	branch = release-2.4
+	url = git@github.com:samv/commons-io
+[submodule "ext/commons-lang"]
+	path = ext/commons-lang
+	url = git@github.com:apache/commons-lang
+[submodule "ext/android-universal-image-loader"]
+	path = ext/android-universal-image-loader
+	url = https://github.com/nostra13/Android-Universal-Image-Loader
+[submodule "ext/jackson-core"]
+	path = ext/jackson-core
+	url = ../DroidPhoto/ext/jackson-core
+[submodule "ext/jackson-databind"]
+	path = ext/jackson-databind
+	url = ../DroidPhoto/ext/jackson-databind
+[submodule "ext/JSONassert"]
+	path = ext/JSONassert
+	url = ../DroidPhoto/ext/JSONassert
