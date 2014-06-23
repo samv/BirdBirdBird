@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- License Agreement at http://iconmonstr.com/license/ -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   x="0px"
+   y="0px"
+   width="512px"
+   height="512px"
+   viewBox="0 0 512 512"
+   enable-background="new 0 0 512 512"
+   xml:space="preserve"
+   id="svg3912"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="iconmonstr-bookmark-26-icon.svg"><metadata
+     id="metadata3919"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
+     id="defs3917" /><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1014"
+     inkscape:window-height="772"
+     id="namedview3915"
+     showgrid="false"
+     inkscape:zoom="0.65186406"
+     inkscape:cx="250.91657"
+     inkscape:cy="228.31527"
+     inkscape:window-x="555"
+     inkscape:window-y="394"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3912" /><path
+     id="bookmark-26-icon"
+     d="M 364.607,347.297 383.316,451.919 256,383.829 128.685,451.919 154.1,309.794 49.999,209.749 193.021,190.001 256,60.081 l 43.282,89.286 c -23.811,22.187 -36.6,52.269 -36.6,83.974 0,30.627 11.928,59.421 33.586,81.077 18.625,18.625 42.529,30.044 68.339,32.879 z"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cccccccccscc"
+     style="fill:#cd9c0c;fill-opacity:1" /><path
+     inkscape:connector-curvature="0"
+     id="bookmark-26-icon-2"
+     d="m 373.79213,150.75353 c -46.756,0 -84.658,37.903 -84.658,84.659 0,46.756 37.902,84.659 84.658,84.659 46.756,0 84.66,-37.903 84.66,-84.659 0,-46.756 -37.904,-84.659 -84.66,-84.659 z m -14.403,130.259 -39.998,-40.009 17.031,-17.033 22.965,22.973 53.023,-53.021 17.037,17.026 z"
+     sodipodi:nodetypes="sssssccccccc"
+     style="fill:#cd6600;fill-opacity:1" /></svg>

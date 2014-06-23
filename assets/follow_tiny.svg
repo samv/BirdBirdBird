@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- The icon can be used freely in both personal and commercial projects with no attribution required, but always appreciated. 
+You may NOT sub-license, resell, rent, redistribute or otherwise transfer the icon without express written permission from iconmonstr.com -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   x="0px"
+   y="0px"
+   width="512px"
+   height="512px"
+   viewBox="0 0 512 512"
+   enable-background="new 0 0 512 512"
+   xml:space="preserve"
+   id="svg4500"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="iconmonstr-user-11-icon.svg"><metadata
+     id="metadata4507"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+     id="defs4505" /><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="716"
+     inkscape:window-height="480"
+     id="namedview4503"
+     showgrid="false"
+     inkscape:zoom="0.4609375"
+     inkscape:cx="256"
+     inkscape:cy="256"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg4500" /><path
+     id="user-11-icon"
+     d="M306.026,461.649H50.081c0-56.453-4.539-87.566,54.473-101.176  c57.767-13.324,114.787-25.234,87.375-75.717c-81.23-149.595-23.159-234.406,64.072-234.406c85.545,0,151.675,84.375,64.072,234.406  c-21.278,36.442-44.047,67.771-44.047,101.285C276.026,415.265,287.436,441.87,306.026,461.649z M462,386.042  c0,41.689-33.797,75.486-75.487,75.486c-41.689,0-75.486-33.797-75.486-75.486s33.797-75.486,75.486-75.486  C428.203,310.556,462,344.353,462,386.042z M432.905,374.524h-32.676v-32.676h-25.233v32.676H342.32v25.234h32.676v32.674h25.233  v-32.674h32.676V374.524z"
+     style="fill:#7a7a7a;fill-opacity:1" /></svg>

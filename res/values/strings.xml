@@ -12,4 +12,14 @@
 
     <string name="title_stream">Streamed.As Stream</string>
 
+    <string name="eg_name">Streamed.As Bro</string>
+    <string name="eg_screen_name">StreamedAs</string>
+    <string name="eg_tweet_text">
+      When birds do sing, hey ding a ding, ding. 
+      Sweet lovers love the spring.
+    </string>
+    <string name="eg_tweet_age">415y</string>
+    <string name="eg_retweet_count">23</string>
+    <string name="eg_favorite_count">238</string>
+
 </resources>

@@ -4,10 +4,13 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-  <TextView
+  <ListView
+     android:id="@+id/lvTweetStream"
      android:layout_width="fill_parent"
      android:layout_height="wrap_content"
-     android:text="Stream goes here."
+     android:layout_alignParentLeft="true"
+     android:layout_alignParentRight="true"
+     android:layout_alignParentTop="true"
      />
 </LinearLayout>
 
