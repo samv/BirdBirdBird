@@ -3,6 +3,7 @@ package as.streamed;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import as.streamed.TwitterApi;
@@ -42,5 +44,25 @@ public class JsonTests {
              "oauth-dancer_normal.jpg", user.profile_image_url_https);
         assertEquals(null, user.utc_offset);
         assertEquals("", user.description);
+    }
+
+    @Test
+    public void testReadTweets() throws IOException {
+        List<TwitterApi.Tweet> tweetList = mapper.readValue
+            (new File(FIXT_DIR + "example.json"),
+             new TypeReference<List<TwitterApi.Tweet>>(){});
+
+        assertEquals(3, tweetList.size());
+        assertEquals("just another test", tweetList.get(0).text);
+        assertEquals(0, tweetList.get(0).retweet_count);
+        assertEquals(false, tweetList.get(0).retweeted);
+        assertEquals(0, tweetList.get(0).favorite_count);
+        assertEquals(false, tweetList.get(0).favorited);
+
+        assertEquals(3, tweetList.get(1).retweet_count);
+        assertEquals(1, tweetList.get(2).retweet_count);
+
+        assertEquals("Taylor Singletary", tweetList.get(2).user.name);
+        assertEquals("episod", tweetList.get(2).user.screen_name);
     }
 }

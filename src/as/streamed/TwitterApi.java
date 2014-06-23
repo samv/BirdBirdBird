@@ -3,6 +3,8 @@ package as.streamed;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class TwitterApi {
     public TwitterApi() {
     }
@@ -24,6 +26,8 @@ public class TwitterApi {
         public Tweet() {}
 
         public String id_str;
+        @JsonFormat(shape=JsonFormat.Shape.STRING,
+                    pattern="EEE MMM dd HH:mm:ss zzz yyyy")
         public Date created_at;
         public String text;
         public User user;
