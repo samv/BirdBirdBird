@@ -48,8 +48,8 @@ public class TwitterAuthInfo {
     }
 
     private void _secrets() {
-        consumerKey = "API_KEY_API_KEY_API_KEY_A";
-        consumerSecret = "API_SECRET_API_SECRET_API_SECRET_API_SECRET_API_SE";
+        consumerKey = "v1jMG98f71HLs2xEi6fbb9JAL";
+        consumerSecret = "pJ5CYbmAFw6KfW5IwAJ9oHA5qxi09ueCxqWYZr9pvdpsIPpEjD";
     }
 
     public TwitterAuthInfo(SharedPreferences prefs) {
