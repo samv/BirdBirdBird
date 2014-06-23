@@ -36,6 +36,8 @@ public class TweetsArrayAdapter
         super(context, 0, tweets);
         this.cb = acb;
         time = (new Date()).getTime();
+        activeViews = new HashMap<String, View>();
+        viewIds = new HashMap<Integer, String>();
     }
 
     private HashMap<String, View> activeViews;
@@ -64,7 +66,8 @@ public class TweetsArrayAdapter
         activeViews.put(tweet.id_str, view);
 
         maybeSetText(view.findViewById(R.id.tvName), user.name);
-        maybeSetText(view.findViewById(R.id.tvScreenName), user.screen_name);
+        maybeSetText(view.findViewById(R.id.tvScreenName),
+                     "@" + user.screen_name);
         maybeSetText(view.findViewById(R.id.tvTweetText), tweet.text);
 
         setMutable(view, tweet);
@@ -95,11 +98,11 @@ public class TweetsArrayAdapter
             (view.findViewById(R.id.tvFavoriteCount),
              tweet.favorite_count + "");
 
-        ((ImageView) view.findViewById(R.id.btnRetweet)).setImageResource
+        ((ImageView) view.findViewById(R.id.imgRetweet)).setImageResource
             (tweet.retweeted
              ? R.drawable.retweeted_tiny
              : R.drawable.retweet_tiny);
-        ((ImageView) view.findViewById(R.id.btnFavorite)).setImageResource
+        ((ImageView) view.findViewById(R.id.imgFavorite)).setImageResource
             (tweet.favorited
              ? R.drawable.favorited_tiny
              : R.drawable.favorite_tiny);

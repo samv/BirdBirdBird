@@ -138,7 +138,7 @@ public class LoginActivity
 
     public void openStream() {
     	Intent i = new Intent(this, StreamActivity.class);
-        i.putExtra("auth", authInfo);
+        i.putExtra("authInfo", authInfo);
     	startActivity(i);
     }
     

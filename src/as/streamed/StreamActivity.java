@@ -45,6 +45,8 @@ public class StreamActivity
         authInfo = (TwitterAuthInfo)
             getIntent().getSerializableExtra("authInfo");
 
+        Log.d("DEBUG", "Stream.onCreate: authInfo = " + authInfo);
+
         tc = new TwitterClient
             (authInfo, new TypeReference<ArrayList<TwitterApi.Tweet>>() {},
              this);
@@ -59,7 +61,9 @@ public class StreamActivity
 
         // connect tweet stream
         lvTweetStream = (ListView) findViewById(R.id.lvTweetStream);
+        tweets = new ArrayList<TwitterApi.Tweet>();
         tweetsAdapter = new TweetsArrayAdapter(this, tweets, this);
+        lvTweetStream.setAdapter(tweetsAdapter);
         lvTweetStream.setOnScrollListener(this);
 
         // now, fill it with data!
@@ -77,6 +81,8 @@ public class StreamActivity
     {
         Log.d("DEBUG", "onScroll(" + view + ", " + firstVisibleItem +
               ", " + visibleItemCount + ", " + totalItemCount + ")");
+        if (tweetsAdapter == null)
+            return;
         if (firstVisibleItem + visibleItemCount == tweetsAdapter.getCount()) {
             Log.d("DEBUG", "let's get some more");
             getNextPage();
@@ -92,10 +98,13 @@ public class StreamActivity
     }
 
     private void getNextPage() {
-        if (tc.getStatus() == AsyncTask.Status.RUNNING) {
-            Log.d("DEBUG", "ignoring getNextPage(); client in use");
+        if (tc.getStatus() != AsyncTask.Status.PENDING) {
+            Log.d("DEBUG", "ignoring getNextPage(); client not ready");
         }
         else {
+            int numItems = tweetsAdapter.getCount();
+            if (numItems > 0)
+                max_id = tweetsAdapter.getItem(numItems - 1).id_str;
             tc.getTweets(TwitterClient.HOME_TIMELINE, max_id);
         }
     }
@@ -104,6 +113,11 @@ public class StreamActivity
     public void onResponse(Object rs) {
         Log.d("DEBUG", "onResponse called with " + rs);
         tweetsAdapter.addAll((ArrayList<TwitterApi.Tweet>) rs);
+        tweetsAdapter.notifyDataSetChanged();
+        tc = new TwitterClient
+                (authInfo,
+                 new TypeReference<ArrayList<TwitterApi.Tweet>>() {},
+                 this);
     }
 
     public void onFailure(Exception e) {
