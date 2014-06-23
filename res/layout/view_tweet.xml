@@ -8,8 +8,12 @@
 
   <ImageView
      android:id="@+id/imgProfile"
-     android:layout_width="80dp"
-     android:layout_height="80dp"
+     android:layout_width="64dp"
+     android:layout_height="64dp"
+     android:layout_marginTop="8dp"
+     android:layout_marginLeft="8dp"
+     android:layout_marginRight="8dp"
+     android:layout_marginBottom="8dp"
      android:layout_alignParentTop="true"
      android:layout_alignParentLeft="true"
      android:src="@drawable/profile_none"
@@ -22,9 +26,10 @@
      android:text="@string/eg_name"
      android:layout_toRightOf="@id/imgProfile"
      android:layout_alignParentTop="true"
+     android:layout_marginTop="8dp"
      android:typeface="sans"
      android:textStyle="bold"
-     android:textSize="20sp"
+     android:textSize="12sp"
      android:textColor="@color/black"
      />
 
@@ -34,9 +39,10 @@
      android:layout_height="wrap_content"
      android:text="@string/eg_screen_name"
      android:layout_toRightOf="@id/tvName"
-     android:layout_alignParentTop="true"
+     android:layout_alignBottom="@id/tvName"
+     android:layout_marginLeft="8dp"
      android:typeface="sans"
-     android:textSize="16sp"
+     android:textSize="10sp"
      android:textColor="@color/grey"
      />
 
@@ -45,10 +51,11 @@
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
      android:text="@string/eg_tweet_age"
-     android:layout_toRightOf="@id/tvName"
-     android:layout_alignParentTop="true"
+     android:layout_alignBottom="@id/tvName"
+     android:layout_alignParentRight="true"
+     android:layout_marginRight="8dp"
      android:typeface="sans"
-     android:textSize="16sp"
+     android:textSize="10sp"
      android:textColor="@color/grey"
      />
 
@@ -59,9 +66,10 @@
      android:text="@string/eg_tweet_text"
      android:layout_toRightOf="@id/imgProfile"
      android:layout_below="@id/tvScreenName"
+     android:layout_marginRight="8dp"
      android:typeface="sans"
-     android:textSize="sp"
-     android:textColor="#888"
+     android:textSize="12sp"
+     android:textColor="@color/black"
     />
 
   <LinearLayout
@@ -71,20 +79,22 @@
      android:layout_toRightOf="@id/imgProfile"
      android:layout_alignParentBottom="true"
      android:layout_below="@id/tvTweetText"
+     android:layout_marginTop="8dp"
+     android:layout_marginBottom="8dp"
      android:orientation="horizontal"
      >
 
-    <ImageButton
-       android:id="@+id/btnReply"
+    <ImageView
+       android:id="@+id/ivReply"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_gravity="left"
-       android:layout_weight="1"
+       android:layout_weight="0"
        android:src="@drawable/reply_tiny"
        />
 
-    <ImageButton
-       android:id="@+id/btnRetweet"
+    <ImageView
+       android:id="@+id/imgRetweet"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_gravity="right"
@@ -97,12 +107,15 @@
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_gravity="left"
-       android:layout_weight="1"
+       android:layout_weight="0"
+       android:typeface="sans"
+       android:textSize="16dp"
+       android:textColor="@color/grey"
        android:text="@string/eg_retweet_count"
        />
 
-    <ImageButton
-       android:id="@+id/btnFavorite"
+    <ImageView
+       android:id="@+id/imgFavorite"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_gravity="right"
@@ -115,12 +128,15 @@
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_gravity="left"
-       android:layout_weight="1"
+       android:layout_weight="0"
+       android:typeface="sans"
+       android:textSize="16dp"
+       android:textColor="@color/grey"
        android:text="@string/eg_favorite_count"
        />
 
-    <ImageButton
-       android:id="@+id/btnFollow"
+    <ImageView
+       android:id="@+id/imgFollow"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_gravity="right"
