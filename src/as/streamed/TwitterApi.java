@@ -4,6 +4,7 @@ package as.streamed;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TwitterApi {
     public TwitterApi() {
@@ -23,7 +24,7 @@ public class TwitterApi {
     }
 
     public static class Tweet {
-        public Tweet() {}
+        public Tweet() { }
 
         public String id_str;
         @JsonFormat(shape=JsonFormat.Shape.STRING,
@@ -32,10 +33,32 @@ public class TwitterApi {
         public String text;
         public User user;
 
-        public int favorite_count = 0;
+        public int favorite_count;
         public boolean favorited;
-        public int retweet_count = 0;
+
+        public int retweet_count;
         public boolean retweeted;
+
+        public String getAge(long sinceTime) {
+            long ago = sinceTime - created_at.getTime();
+            ago = ago / 1000;
+            if (ago < 0) {
+                return "the future";
+            }
+            else if (ago < 120) {
+                return ago + "s";
+            }
+            else if (ago < (90 * 60)) {
+                return (ago / 60) + "m";
+            }
+            else if (ago < (72 * 3600)) {
+                return (ago / 3600) + "h";
+            }
+            else {
+                return (ago / 86400) + "d";
+            }
+            // todo: date formatting!
+        }
 
         public String source;
         // todo: entities for hashtag etc highlighting

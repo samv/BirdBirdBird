@@ -5,41 +5,89 @@ import java.util.HashMap;
 
 import android.os.AsyncTask;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
+import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
+import as.streamed.TwitterAuthInfo;
 
-public class TwitterClient extends AsyncTask<OAuthRequest, Integer, Response> {
+public class TwitterClient extends AsyncTask<OAuthRequest, Void, Object> {
+
+    private static final String TWITTER_API = "https://api.twitter.com/1.1";
+    public static final String HOME_TIMELINE = "/statuses/home_timeline";
+    private static final String API_EXT = ".json";
 
     private Token accessToken;
     private OAuthService service;
 
     private Callbacks cb;
+    private ObjectMapper om;
+    private Class valueType;
+    private TypeReference valueTypeRef;
     private Exception exc_info;
 
-    public TwitterClient(TwitterAuthInfo authInfo, Callbacks handlers) {
-        service = authInfo.getService();
-        accessToken = authInfo.getAccessToken();
+    public TwitterClient(TwitterAuthInfo authInfo,
+                         Class valueType,
+                         Callbacks handlers)
+    {
+        this.valueType = valueType;
         cb = handlers;
+        setUpService(authInfo);
+        setUpMapper();
     }
 
-    protected Response doInBackground(OAuthRequest... request) {
-        Response rs = null;
+    public TwitterClient(TwitterAuthInfo authInfo,
+                         TypeReference typeRef, Callbacks handlers)
+    {
+        this.valueTypeRef = typeRef;
+        cb = handlers;
+        setUpService(authInfo);
+        setUpMapper();
+    }
+
+    private void setUpService(TwitterAuthInfo authInfo) {
+        service = authInfo.getService();
+        accessToken = authInfo.getAccessToken();
+    }
+
+    private void setUpMapper() {
+        om = new ObjectMapper();
+        om.configure
+            (DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
+
+    protected Object doInBackground(OAuthRequest... request) {
+        Object converted = null;
         exc_info = null;
         try {
             this.service.signRequest(accessToken, request[0]);
-            rs = request[0].send();
+            Response rs = request[0].send();
+            if (rs.isSuccessful()) {
+                if (valueType != null) {
+                    converted = om.readValue(rs.getStream(), valueType);
+                }
+                else {
+                    converted = om.readValue(rs.getStream(), valueTypeRef);
+                }
+            }
+            else {
+                throw new Exception
+                    ("HTTP Error " + rs.getCode() + ": " + rs.getMessage());
+            }
         }
         catch (Exception e) {
             exc_info = e;
         }
-        return rs;
+        return converted;
     }
 
-    protected void onPostExecute(Response result) {
+    protected void onPostExecute(Object result) {
         if (result == null) {
             cb.onFailure(exc_info);
         }
@@ -48,9 +96,17 @@ public class TwitterClient extends AsyncTask<OAuthRequest, Integer, Response> {
         }
     }
 
-    public interface Callbacks {
-        abstract void onResponse(Response rs);
-        abstract void onFailure(Exception e);
+    public void getTweets(String endpoint, String max_id) {
+        OAuthRequest oar = new OAuthRequest
+            (Verb.GET, TWITTER_API + endpoint + API_EXT);
+        if (max_id != null) {
+            oar.addQuerystringParameter("max_id", max_id);
+        }
+        execute(oar);
     }
 
+    public interface Callbacks {
+        abstract void onResponse(Object rs);
+        abstract void onFailure(Exception e);
+    }
 }
