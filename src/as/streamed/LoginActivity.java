@@ -80,6 +80,8 @@ public class LoginActivity
 
     public void onFailure(Exception e) {
         Log.d("DEBUG", "onFailure(" + e + ")");
+        authInfo.clearRequestToken();
+        authInfo.savePreferences(prefs.edit());
         e.printStackTrace();
     }
 

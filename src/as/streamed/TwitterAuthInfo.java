@@ -66,6 +66,12 @@ public class TwitterAuthInfo implements Serializable {
         return new Token(requestToken, requestSecret);
     }
 
+    public void clearRequestToken() {
+        requestToken = null;
+        requestSecret = null;
+        authorizeUrl = null;
+    }
+
     public boolean haveRequestToken() {
         return requestToken != null;
     }
