@@ -27,12 +27,10 @@ public class TwitterLoginTask extends AsyncTask<TwitterAuthInfo, String, Twitter
         TwitterAuthInfo newAuthInfo = new TwitterAuthInfo(authInfo[0]);
         try {
             OAuthService service = newAuthInfo.getService();
-            if (!newAuthInfo.haveRequestToken()) {
+            if (!newAuthInfo.haveRequestToken())
                 getRequestToken(service, newAuthInfo);
-            }
-            else {
+            else if (!newAuthInfo.haveAccessToken())
                 getAccessToken(service, newAuthInfo);
-            }
         }
         catch (Exception e) {
             exc_info = e;

@@ -85,7 +85,8 @@ public class TweetsArrayAdapter
 
     private void maybeSetText(View textView, String text) {
         TextView tv = (TextView) textView;
-        if (tv.getText().toString() != text)
+        if ((tv != null) && (tv.getText() != null) &&
+                tv.getText().toString() != text)
             tv.setText(text);
     }
 

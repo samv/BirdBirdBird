@@ -74,7 +74,7 @@ android {
             assets.srcDirs = ['assets']
         }
 
-        androidTest.setRoot('tests')
+        //androidTest.setRoot('tests')
 
         // Move the tests to tests/java, tests/res, etc...
         //androidTest.setRoot('tests')

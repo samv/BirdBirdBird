@@ -1,12 +1,12 @@
 
 package as.streamed;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
+import java.util.Date;
 
-public class TwitterApi {
+public class TwitterApi implements Serializable {
     public TwitterApi() {
     }
 
@@ -23,7 +23,7 @@ public class TwitterApi {
         public Integer utc_offset;
     }
 
-    public static class Tweet {
+    public static class Tweet implements Serializable {
         public Tweet() { }
 
         public String id_str;

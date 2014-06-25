@@ -45,5 +45,9 @@
        android:name="StreamActivity"
        android:label="@string/title_stream"
        />
+    <activity
+       android:name="TweetActivity"
+       android:label="@string/title_tweet"
+       />
   </application>
 </manifest>

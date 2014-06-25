@@ -4,6 +4,7 @@ package as.streamed;
 import java.util.HashMap;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -17,10 +18,21 @@ import org.scribe.oauth.OAuthService;
 
 import as.streamed.TwitterAuthInfo;
 
+// TODO: should be able to make this work:
+
+// implements TwitterClient.Resource<TwitterApi.User>.Callbacks
+//            TwitterClient.ListResource<TwitterApi.Tweet>.Callbacks
+
+//  that way, onResource(X) could overload, and a single class could
+//  receive all the callback types it likes, without the requirement
+//  of the caller to perform run-time type casting.
+
 public class TwitterClient extends AsyncTask<OAuthRequest, Void, Object> {
 
     private static final String TWITTER_API = "https://api.twitter.com/1.1";
     public static final String HOME_TIMELINE = "/statuses/home_timeline";
+    public static final String VERIFY_CREDENTIALS = "/account/verify_credentials";
+    public static final String TWEET_NEW = "/statuses/update";
     private static final String API_EXT = ".json";
 
     private Token accessToken;
@@ -102,6 +114,20 @@ public class TwitterClient extends AsyncTask<OAuthRequest, Void, Object> {
         if (max_id != null) {
             oar.addQuerystringParameter("max_id", max_id);
         }
+        execute(oar);
+    }
+
+    public void getUser(String endpoint) {
+        OAuthRequest oar = new OAuthRequest
+            (Verb.GET, TWITTER_API + endpoint + API_EXT);
+        execute(oar);
+    }
+
+    public void postTweet(String endpoint, TwitterApi.Tweet tweet) {
+        OAuthRequest oar = new OAuthRequest
+            (Verb.POST, TWITTER_API + endpoint + API_EXT);
+        oar.addQuerystringParameter("status", tweet.text);
+        Log.d("DEBUG", "Tweeting '" + tweet.text + "'");
         execute(oar);
     }
 

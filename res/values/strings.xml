@@ -9,8 +9,15 @@
     <string name="action_about">About</string>
 
     <string name="label_login">Log in with Twitter</string>
+    <string name="label_tweet">Tweet</string>
 
     <string name="title_stream">Streamed.As Stream</string>
+
+    <string name="title_tweet">Compose Tweet</string>
+
+    <string name="hint_tweet_text">
+      What\'s happening?
+    </string>
 
     <string name="eg_name">Streamed.As Bro</string>
     <string name="eg_screen_name">StreamedAs</string>

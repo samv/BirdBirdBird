@@ -21,7 +21,8 @@ public class LoginActivity
     extends Activity
     implements View.OnClickListener,
                MenuItem.OnMenuItemClickListener,
-               TwitterLoginTask.ResultCallbacks
+               TwitterLoginTask.ResultCallbacks,
+               TwitterClient.Callbacks
 {
     private TwitterLoginTask loginTask;
     private Button btnLogin;
@@ -29,24 +30,38 @@ public class LoginActivity
     private TwitterAuthInfo authInfo;
     private SharedPreferences prefs;
 
+    public void loadAuth() {
+        prefs = getSharedPreferences("AuthData", MODE_PRIVATE);
+        authInfo = new TwitterAuthInfo(prefs);
+    }
+
+    public void saveAuth() {
+        SharedPreferences.Editor editor = prefs.edit();
+        authInfo.savePreferences(editor);
+        editor.commit();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Log.d("DEBUG", "onCreate()");
+        Log.d("DEBUG", "LoginActivity.onCreate()");
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
 
-        prefs = getPreferences(MODE_PRIVATE);
-        authInfo = new TwitterAuthInfo(prefs);
-
-        if (authInfo.haveAccessToken()) {
+        loadAuth();
+                
+        if (authInfo.haveUser()) {
             // already have a token, so skip to the stream
             Log.d("DEBUG", "Already logged in, skipping to stream!");
             openStream();
+        }
+        else if (authInfo.haveAccessToken()) {
+            Log.d("DEBUG", "Have access token, need to get user");
+            getUser();
         }
     }
 
@@ -55,10 +70,12 @@ public class LoginActivity
 		getMenuInflater().inflate(R.menu.login, menu);
 
         MenuItem item = menu.findItem(R.id.miLogin);
-        item.setOnMenuItemClickListener(this);
+        if (item != null)
+            item.setOnMenuItemClickListener(this);
 
         item = menu.findItem(R.id.miAbout);
-        item.setOnMenuItemClickListener(this);
+        if (item != null)
+            item.setOnMenuItemClickListener(this);
 		return true;
 	}
 	
@@ -78,21 +95,22 @@ public class LoginActivity
         loginTask.execute(authInfo);
     }
 
+    // TwitterLoginTask.ResultCallbacks
     public void onFailure(Exception e) {
-        Log.d("DEBUG", "onFailure(" + e + ")");
-        authInfo.clearRequestToken();
-        authInfo.savePreferences(prefs.edit());
+        Log.d("DEBUG", "LoginActivity.onFailure(" + e + ")");
+        authInfo.clearSession();
+        saveAuth();
         e.printStackTrace();
     }
 
     public void onProgress(String message) {
-        Log.d("DEBUG", "onProgress('" + message + "')");
+        Log.d("DEBUG", "LoginActivity.onProgress('" + message + "')");
     }
 
     public void onSuccess(TwitterAuthInfo authInfo) {
-        Log.d("DEBUG", "onSuccess()");
+        Log.d("DEBUG", "LoginActivity.onSuccess()");
         this.authInfo = authInfo;
-        authInfo.savePreferences(prefs.edit());
+        saveAuth();
         if (authInfo.haveAccessToken()) {
             openStream();
         }
@@ -100,6 +118,14 @@ public class LoginActivity
             openLogin();
         }
     }
+
+    // TwitterClient.Callbacks
+    public void onResponse(Object user) {
+        Log.d("DEBUG", "LoginActivity.onResult(" + user + ")");
+        this.authInfo.setUser((TwitterApi.User) user);
+        saveAuth();
+    }
+
     public void openLogin() {
         Intent intent = new Intent(Intent.ACTION_VIEW, authInfo.getAuthUri());
         startActivity(intent);
@@ -108,39 +134,50 @@ public class LoginActivity
     // on return from the OAuth login...
 	@Override
 	protected void onNewIntent(Intent intent) {
-        Log.d("DEBUG", "onNewIntent()");
+        Log.d("DEBUG", "LoginActivity.onNewIntent()");
 		super.onNewIntent(intent);
 		setIntent(intent);
 	}
 
+    private void getUser() {
+        TwitterClient tc = new TwitterClient
+            (authInfo, TwitterApi.User.class, this);
+        tc.getUser(TwitterClient.VERIFY_CREDENTIALS);
+    }
+
 	@Override
 	protected void onResume() {
 		super.onResume();
-        Log.d("DEBUG", "onResume()");
-        if (authInfo.haveAccessToken()) {
-            // already have a token, so skip to the stream
-            Log.d("DEBUG", "have access token, opening stream");
-            openStream();
-        }
-        else {
-            Log.d("DEBUG", "no access token, checking intent");
-            Uri uri = getIntent().getData();
-            if (uri != null) {
-                Log.d("DEBUG", "found URI intent: " + uri);
-                authInfo.setAuthUri(uri);
-                authInfo.savePreferences(prefs.edit());
-                Log.d("DEBUG", "saved authInfo preferences");
-                loginTask = new TwitterLoginTask(this);
-                loginTask.execute(authInfo);
+        Log.d("DEBUG", "LoginActivity.onResume()");
+        loadAuth();
+        if (authInfo.haveRequestToken()) {
+            if (authInfo.haveAccessToken()) {
+                if (authInfo.haveUser()) {
+                    // already have a token, so skip to the stream
+                    Log.d("DEBUG", "have user, opening stream");
+                    openStream();
+                }
+                else {
+                    getUser();
+                }
+            }
+            else {
+                Log.d("DEBUG", "no access token, checking intent");
+                Uri uri = getIntent().getData();
+                if (uri != null) {
+                    Log.d("DEBUG", "found URI intent: " + uri);
+                    authInfo.setAuthUri(uri);
+                    saveAuth();
+                    Log.d("DEBUG", "saved authInfo preferences");
+                    loginTask = new TwitterLoginTask(this);
+                    loginTask.execute(authInfo);
+                }
             }
         }
 	}
 
     public void openStream() {
     	Intent i = new Intent(this, StreamActivity.class);
-        i.putExtra("authInfo", authInfo);
     	startActivity(i);
     }
-    
-
 }
