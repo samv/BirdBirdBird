@@ -76,8 +76,8 @@ public class TweetActivity extends Activity
             .build();
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.init(config);
-        //imageLoader.displayImage
-            //(authInfo.getUser().profile_image_url_https, imgProfile);
+        imageLoader.displayImage
+            (authInfo.getUser().profile_image_url_https, imgProfile);
 
         tvName = (TextView) findViewById(R.id.tvName);
         tvName.setText("@" + authInfo.getUser().name);

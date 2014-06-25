@@ -92,6 +92,7 @@ public class LoginActivity
     public void loginToRest() {
         loginTask = new TwitterLoginTask(this);
         Log.d("DEBUG", "Starting new loginTask");
+        authInfo.clearSession();
         loginTask.execute(authInfo);
     }
 
@@ -112,7 +113,10 @@ public class LoginActivity
         this.authInfo = authInfo;
         saveAuth();
         if (authInfo.haveAccessToken()) {
-            openStream();
+            if (authInfo.haveUser())
+                openStream();
+            else
+                getUser();
         }
         else {
             openLogin();
@@ -124,6 +128,7 @@ public class LoginActivity
         Log.d("DEBUG", "LoginActivity.onResult(" + user + ")");
         this.authInfo.setUser((TwitterApi.User) user);
         saveAuth();
+        openStream();
     }
 
     public void openLogin() {

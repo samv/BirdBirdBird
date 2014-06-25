@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 import as.streamed.TweetsArrayAdapter;
 import as.streamed.TwitterApi;
 import as.streamed.TwitterAuthInfo;
@@ -90,6 +91,10 @@ public class StreamActivity
 
         // now, fill it with data!
         getNextPage();
+
+        Toast.makeText
+            (this, "Welcome, " + authInfo.getUser().name, Toast.LENGTH_SHORT)
+            .show();
     }
 
 	@Override
