@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import org.scribe.model.OAuthRequest;
 
@@ -25,7 +25,7 @@ public class LoginActivity
                TwitterClient.Callbacks
 {
     private TwitterLoginTask loginTask;
-    private Button btnLogin;
+    private ImageButton btnLogin;
 
     private TwitterAuthInfo authInfo;
     private SharedPreferences prefs;
@@ -49,7 +49,7 @@ public class LoginActivity
 
         Log.d("DEBUG", "LoginActivity.onCreate()");
 
-        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnLogin = (ImageButton) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
 
         loadAuth();
