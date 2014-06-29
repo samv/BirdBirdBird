@@ -16,7 +16,7 @@ import org.scribe.model.OAuthRequest;
 
 import mobi.birdbirdbird.R;
 import mobi.birdbirdbird.task.TwitterClient;
-import mobi.birdbirdbird.task.TwitterLoginTask;
+import mobi.birdbirdbird.task.TwitterOaLoginTask;
 import mobi.birdbirdbird.model.TwitterAuthInfo;
 import mobi.birdbirdbird.typedef.TwitterApi;
 
@@ -24,10 +24,10 @@ public class LoginActivity
     extends Activity
     implements View.OnClickListener,
                MenuItem.OnMenuItemClickListener,
-               TwitterLoginTask.ResultCallbacks,
+               TwitterOaLoginTask.Callbacks,
                TwitterClient.Callbacks
 {
-    private TwitterLoginTask loginTask;
+    private TwitterOaLoginTask loginTask;
     private ImageButton btnLogin;
 
     private TwitterAuthInfo authInfo;
@@ -93,13 +93,20 @@ public class LoginActivity
     }
 
     public void loginToRest() {
-        loginTask = new TwitterLoginTask(this);
+        loginTask = new TwitterOaLoginTask(this);
         Log.d("DEBUG", "Starting new loginTask");
         authInfo.clearSession();
         loginTask.execute(authInfo);
     }
 
-    // TwitterLoginTask.ResultCallbacks
+    // TwitterOaLoginTask.Callbacks
+    public void onOaLoginFailure(Exception e) {
+        Log.d("DEBUG", "LoginActivity.onOaLoginFailure(" + e + ")");
+        authInfo.clearSession();
+        saveAuth();
+        e.printStackTrace();
+    }
+
     public void onFailure(Exception e) {
         Log.d("DEBUG", "LoginActivity.onFailure(" + e + ")");
         authInfo.clearSession();
@@ -107,12 +114,12 @@ public class LoginActivity
         e.printStackTrace();
     }
 
-    public void onProgress(String message) {
-        Log.d("DEBUG", "LoginActivity.onProgress('" + message + "')");
+    public void onOaLoginProgress(String message) {
+        Log.d("DEBUG", "LoginActivity.onOaLoginProgress('" + message + "')");
     }
 
-    public void onSuccess(TwitterAuthInfo authInfo) {
-        Log.d("DEBUG", "LoginActivity.onSuccess()");
+    public void onOaLoginSuccess(TwitterAuthInfo authInfo) {
+        Log.d("DEBUG", "LoginActivity.onOaLoginSuccess()");
         this.authInfo = authInfo;
         saveAuth();
         if (authInfo.haveAccessToken()) {
@@ -177,7 +184,7 @@ public class LoginActivity
                     authInfo.setAuthUri(uri);
                     saveAuth();
                     Log.d("DEBUG", "saved authInfo preferences");
-                    loginTask = new TwitterLoginTask(this);
+                    loginTask = new TwitterOaLoginTask(this);
                     loginTask.execute(authInfo);
                 }
             }

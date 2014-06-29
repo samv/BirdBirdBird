@@ -13,12 +13,18 @@ import org.scribe.oauth.OAuthService;
 
 import mobi.birdbirdbird.model.TwitterAuthInfo;
 
-public class TwitterLoginTask extends AsyncTask<TwitterAuthInfo, String, TwitterAuthInfo> {
-
-    private ResultCallbacks cb;
+public class TwitterOaLoginTask
+    extends AsyncTask<TwitterAuthInfo, String, TwitterAuthInfo>
+{
+    public interface Callbacks {
+        public void onOaLoginSuccess(TwitterAuthInfo authInfo);
+        public void onOaLoginProgress(String message);
+        public void onOaLoginFailure(Exception e);
+    }
+    private Callbacks cb;
     private Exception exc_info = null;
 
-    public TwitterLoginTask(ResultCallbacks rcb)
+    public TwitterOaLoginTask(Callbacks rcb)
     {
         this.cb = rcb;
     }
@@ -79,21 +85,16 @@ public class TwitterLoginTask extends AsyncTask<TwitterAuthInfo, String, Twitter
     }
 
     protected void onProgressUpdate(String... progress) {
-        cb.onProgress(progress[0]);
+        cb.onOaLoginProgress(progress[0]);
     }
     
     protected void onPostExecute(TwitterAuthInfo new_state) {
         if (exc_info == null) {
-            cb.onSuccess(new_state);
+            cb.onOaLoginSuccess(new_state);
         }
         else {
-            cb.onFailure(exc_info);
+            cb.onOaLoginFailure(exc_info);
         }
     }
 
-    public interface ResultCallbacks {
-        public void onSuccess(TwitterAuthInfo authInfo);
-        public void onProgress(String message);
-        public void onFailure(Exception e);
-    }
 }
