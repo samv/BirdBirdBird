@@ -6,10 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Date;
 
-public class TwitterApi implements Serializable {
-    public TwitterApi() {
-    }
-
+public class Twitter implements Serializable {
     public static class User {
         public User() {}
         public String id_str;

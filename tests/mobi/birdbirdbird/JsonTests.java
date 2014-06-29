@@ -15,7 +15,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-import mobi.birdbirdbird.typedef.TwitterApi;
+import mobi.birdbirdbird.typedef.Twitter;
 
 
 public class JsonTests {
@@ -32,8 +32,8 @@ public class JsonTests {
 
     @Test
     public void testReadValue() throws IOException {
-        TwitterApi.User user = mapper.readValue
-            (new File(FIXT_DIR + "user.json"), TwitterApi.User.class);
+        Twitter.User user = mapper.readValue
+            (new File(FIXT_DIR + "user.json"), Twitter.User.class);
 
         assertEquals("119476949", user.id_str);
         assertEquals("OAuth Dancer", user.name);
@@ -48,9 +48,9 @@ public class JsonTests {
 
     @Test
     public void testReadTweets() throws IOException {
-        List<TwitterApi.Tweet> tweetList = mapper.readValue
+        List<Twitter.Tweet> tweetList = mapper.readValue
             (new File(FIXT_DIR + "example.json"),
-             new TypeReference<List<TwitterApi.Tweet>>(){});
+             new TypeReference<List<Twitter.Tweet>>(){});
 
         assertEquals(3, tweetList.size());
         assertEquals("just another test", tweetList.get(0).text);

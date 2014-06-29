@@ -16,7 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import mobi.birdbirdbird.R;
 import mobi.birdbirdbird.adapter.TweetsArrayAdapter;
-import mobi.birdbirdbird.typedef.TwitterApi;
+import mobi.birdbirdbird.typedef.Twitter;
 import mobi.birdbirdbird.model.TwitterAuthInfo;
 import mobi.birdbirdbird.task.TwitterClient;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -36,7 +36,7 @@ public class StreamActivity
 {
     private ListView lvTweetStream;
     private TweetsArrayAdapter tweetsAdapter;
-    private ArrayList<TwitterApi.Tweet> tweets;
+    private ArrayList<Twitter.Tweet> tweets;
     private String max_id;
     private ImageLoader imageLoader;
     private TwitterClient tc;
@@ -72,7 +72,7 @@ public class StreamActivity
         }
 
         tc = new TwitterClient
-            (authInfo, new TypeReference<ArrayList<TwitterApi.Tweet>>() {},
+            (authInfo, new TypeReference<ArrayList<Twitter.Tweet>>() {},
              this);
 
         // init the imageloader
@@ -85,7 +85,7 @@ public class StreamActivity
 
         // connect tweet stream
         lvTweetStream = (ListView) findViewById(R.id.lvTweetStream);
-        tweets = new ArrayList<TwitterApi.Tweet>();
+        tweets = new ArrayList<Twitter.Tweet>();
         tweetsAdapter = new TweetsArrayAdapter(this, tweets, this);
         lvTweetStream.setAdapter(tweetsAdapter);
         lvTweetStream.setOnScrollListener(this);
@@ -190,11 +190,11 @@ public class StreamActivity
     // TwitterClient.Callbacks
     public void onResponse(Object rs) {
         Log.d("DEBUG", "StreamActivity.onResponse called with " + rs);
-        tweetsAdapter.addAll((ArrayList<TwitterApi.Tweet>) rs);
+        tweetsAdapter.addAll((ArrayList<Twitter.Tweet>) rs);
         tweetsAdapter.notifyDataSetChanged();
         tc = new TwitterClient
                 (authInfo,
-                 new TypeReference<ArrayList<TwitterApi.Tweet>>() {},
+                 new TypeReference<ArrayList<Twitter.Tweet>>() {},
                  this);
     }
 

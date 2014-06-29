@@ -17,12 +17,12 @@ import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
 import mobi.birdbirdbird.model.TwitterAuthInfo;
-import mobi.birdbirdbird.typedef.TwitterApi;
+import mobi.birdbirdbird.typedef.Twitter;
 
 // TODO: should be able to make this work:
 
-// implements TwitterClient.Resource<TwitterApi.User>.Callbacks
-//            TwitterClient.ListResource<TwitterApi.Tweet>.Callbacks
+// implements TwitterClient.Resource<Twitter.User>.Callbacks
+//            TwitterClient.ListResource<Twitter.Tweet>.Callbacks
 
 //  that way, onResource(X) could overload, and a single class could
 //  receive all the callback types it likes, without the requirement
@@ -124,7 +124,7 @@ public class TwitterClient extends AsyncTask<OAuthRequest, Void, Object> {
         execute(oar);
     }
 
-    public void postTweet(String endpoint, TwitterApi.Tweet tweet) {
+    public void postTweet(String endpoint, Twitter.Tweet tweet) {
         OAuthRequest oar = new OAuthRequest
             (Verb.POST, TWITTER_API + endpoint + API_EXT);
         oar.addQuerystringParameter("status", tweet.text);

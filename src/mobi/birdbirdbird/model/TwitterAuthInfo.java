@@ -4,7 +4,7 @@ package mobi.birdbirdbird.model;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
-import mobi.birdbirdbird.typedef.TwitterApi;
+import mobi.birdbirdbird.typedef.Twitter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class TwitterAuthInfo {
     public String authorizeUrl; // FIXME
     private String accessToken;
     private String accessSecret;
-    private TwitterApi.User user;
+    private Twitter.User user;
     private String userInfoJson;
     private ObjectMapper om;
 
@@ -167,11 +167,11 @@ public class TwitterAuthInfo {
         return userInfoJson != null;
     }
 
-    public TwitterApi.User getUser() {
+    public Twitter.User getUser() {
         if (user == null) {
             if (userInfoJson != null) {
                 try {
-                    user = getOM().readValue(userInfoJson, TwitterApi.User.class);
+                    user = getOM().readValue(userInfoJson, Twitter.User.class);
                 }
                 catch (IOException e) {
                     Log.d("DEBUG", "Jackson says: " + e);
@@ -182,7 +182,7 @@ public class TwitterAuthInfo {
         return user;
     }
 
-    public void setUser(TwitterApi.User user) {
+    public void setUser(Twitter.User user) {
         this.user = user;
         if (user == null)
             userInfoJson = null;

@@ -18,7 +18,7 @@ import mobi.birdbirdbird.R;
 import mobi.birdbirdbird.task.TwitterClient;
 import mobi.birdbirdbird.task.TwitterOaLoginTask;
 import mobi.birdbirdbird.model.TwitterAuthInfo;
-import mobi.birdbirdbird.typedef.TwitterApi;
+import mobi.birdbirdbird.typedef.Twitter;
 
 public class LoginActivity
     extends Activity
@@ -136,7 +136,7 @@ public class LoginActivity
     // TwitterClient.Callbacks
     public void onResponse(Object user) {
         Log.d("DEBUG", "LoginActivity.onResult(" + user + ")");
-        this.authInfo.setUser((TwitterApi.User) user);
+        this.authInfo.setUser((Twitter.User) user);
         saveAuth();
         openStream();
     }
@@ -156,7 +156,7 @@ public class LoginActivity
 
     private void getUser() {
         TwitterClient tc = new TwitterClient
-            (authInfo, TwitterApi.User.class, this);
+            (authInfo, Twitter.User.class, this);
         tc.getUser(TwitterClient.VERIFY_CREDENTIALS);
     }
 

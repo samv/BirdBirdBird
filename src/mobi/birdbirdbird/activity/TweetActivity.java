@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import mobi.birdbirdbird.R;
-import mobi.birdbirdbird.typedef.TwitterApi;
+import mobi.birdbirdbird.typedef.Twitter;
 import mobi.birdbirdbird.model.TwitterAuthInfo;
 import mobi.birdbirdbird.task.TwitterClient;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -52,7 +52,7 @@ public class TweetActivity extends Activity
     public void onResponse(Object rs) {
         Log.d("DEBUG", "TweetActivity onResponse called with " + rs);
         Intent i = new Intent();
-        i.putExtra("tweet_id", ((TwitterApi.Tweet) rs).id_str);
+        i.putExtra("tweet_id", ((Twitter.Tweet) rs).id_str);
         setResult(RESULT_OK, i);
         this.finish();
     }
@@ -62,8 +62,8 @@ public class TweetActivity extends Activity
     }
 
     public void onClick(View v) {
-        TwitterClient tc = new TwitterClient(authInfo, TwitterApi.Tweet.class, this);
-        TwitterApi.Tweet status = new TwitterApi.Tweet();
+        TwitterClient tc = new TwitterClient(authInfo, Twitter.Tweet.class, this);
+        Twitter.Tweet status = new Twitter.Tweet();
         status.text = etTweetText.getText().toString();
         tc.postTweet(TwitterClient.TWEET_NEW, status);
     }
