@@ -11,7 +11,8 @@
      android:layout_height="wrap_content"
      android:layout_centerHorizontal="true"
      android:layout_centerVertical="true"
-     android:drawable="@drawable/bird0"
+     android:src="@drawable/bigbird"
+     android:background="@null"
      />
 
 </RelativeLayout>
