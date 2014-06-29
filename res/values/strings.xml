@@ -11,6 +11,9 @@
     <string name="label_login">Log in with Twitter</string>
     <string name="label_tweet">Tweet</string>
 
+    <string name="tab_home">Home</string>
+    <string name="tab_mentions">Mentions</string>
+
     <string name="title_stream">BirdBirdBird Stream</string>
 
     <string name="title_tweet">Compose Tweet</string>

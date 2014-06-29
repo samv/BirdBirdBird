@@ -58,7 +58,7 @@ public class RestListCall<T>
     }
 
     protected void onPostExecute(List<T> result) {
-        Log.d("DEBUG", "RestListCall.onPostExecute(" + result + ")");
+        //Log.d("DEBUG", "RestListCall.onPostExecute(" + result + ")");
         if (result == null) {
            cb.onRestFailure(excInfo);
         }

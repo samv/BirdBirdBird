@@ -4,9 +4,11 @@ package mobi.birdbirdbird.adapter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +80,7 @@ public class TweetsArrayAdapter
             imgProfile.setImageResource(R.drawable.profile_default);
         }
         else {
+            imgProfile.setImageResource(R.drawable.profile_none);
             cb.setImage(Uri.parse(user.profile_image_url_https), imgProfile);
         }
 
@@ -108,5 +111,52 @@ public class TweetsArrayAdapter
             (tweet.favorited
              ? R.drawable.favorited_tiny
              : R.drawable.favorite_tiny);
+    }
+
+    public int insertIndex(Twitter.Tweet tweet) {
+        //Log.d("DEBUG", "where should I insert tweet " + tweet.id_str);
+        int min = 0;
+        int max = getCount() - 1;
+        while (min != max) {
+            int middle = (min + max) / 2;
+            Twitter.Tweet midTweet = getItem(middle);
+            if (tweet.isAfter(midTweet))
+                max = middle;
+            else if (tweet.isBefore(midTweet)) {
+                if (min == middle)
+                    min += 1;
+                else
+                    min = middle;
+            }
+            else {
+                min = middle;
+                max = middle;
+            }
+        }
+        //Log.d("DEBUG", "at position " + min + ", before " + getItem(min).id_str);
+        return min;
+    }
+
+    public void merge(List<Twitter.Tweet> tweets) {
+        int size = getCount();
+        int oldest = size - 1;
+        if ((size == 0) || (getItem(oldest).isAfter(tweets.get(0)))) {
+            //Log.d("DEBUG", "adding tweets to end of list");
+            this.addAll(tweets);
+        }
+        else {
+            int newest = insertIndex(tweets.get(0));
+            Twitter.Tweet lastTweet = null;
+            for (Twitter.Tweet t: tweets) {
+                this.insert(t, newest);
+                lastTweet = t;
+                newest += 1;
+            }
+            while (newest < getCount() &&
+                   !lastTweet.isAfter(getItem(newest))) {
+                //Log.d("DEBUG", "removing an obsolete tweet from position " + newest);
+                this.remove(getItem(newest));
+            }
+        }
     }
 }

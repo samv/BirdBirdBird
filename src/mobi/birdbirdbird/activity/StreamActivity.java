@@ -1,6 +1,7 @@
 package mobi.birdbirdbird.activity;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -14,37 +15,31 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
-import mobi.birdbirdbird.R;
-import mobi.birdbirdbird.adapter.TweetsArrayAdapter;
-import mobi.birdbirdbird.typedef.Twitter;
-import mobi.birdbirdbird.model.TwitterApi;
-import mobi.birdbirdbird.model.TwitterAuthInfo;
-import mobi.birdbirdbird.task.RestListCall;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import java.util.ArrayList;
 import java.util.List;
+import mobi.birdbirdbird.R;
+import mobi.birdbirdbird.adapter.TweetsArrayAdapter;
+import mobi.birdbirdbird.model.TwitterApi;
+import mobi.birdbirdbird.model.TwitterAuthInfo;
+import mobi.birdbirdbird.task.RestListCall;
+import mobi.birdbirdbird.typedef.Twitter;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Verb;
 
 public class StreamActivity
     extends Activity
-    implements TweetsArrayAdapter.ActionCallbacks,
-               MenuItem.OnMenuItemClickListener,
-               AbsListView.OnScrollListener,
-               View.OnCreateContextMenuListener,
-               RestListCall.RS<Twitter.Tweet>
+    implements MenuItem.OnMenuItemClickListener,
+               View.OnCreateContextMenuListener
 {
-    private ListView lvTweetStream;
-    private TweetsArrayAdapter tweetsAdapter;
-    private ArrayList<Twitter.Tweet> tweets;
-    private String max_id;
-    private ImageLoader imageLoader;
     private TwitterApi twitterApi;
     private AsyncTask getUsersCall;
     private TwitterAuthInfo authInfo;
     private SharedPreferences prefs;
+    private StreamFragment stream;
+    private ImageLoader imageLoader;
 
     public void loadAuth() {
         prefs = getSharedPreferences("AuthData", MODE_PRIVATE);
@@ -67,9 +62,9 @@ public class StreamActivity
 
         loadAuth();
 
-        Log.d("DEBUG", "Stream.onCreate: authInfo = " + authInfo);
+        Log.d("DEBUG", "StreamActivity.onCreate: authInfo = " + authInfo);
         if (!authInfo.haveAccessToken()) {
-            Log.d("DEBUG", "Stream.onCreate: no access token, returning");
+            Log.d("DEBUG", "StreamActivity.onCreate: no access token, returning");
             this.finish();
             return;
         }
@@ -84,19 +79,19 @@ public class StreamActivity
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(config);
 
-        // connect tweet stream
-        lvTweetStream = (ListView) findViewById(R.id.lvTweetStream);
-        tweets = new ArrayList<Twitter.Tweet>();
-        tweetsAdapter = new TweetsArrayAdapter(this, tweets, this);
-        lvTweetStream.setAdapter(tweetsAdapter);
-        lvTweetStream.setOnScrollListener(this);
-
-        // now, fill it with data!
-        getNextPage();
+        createStreamFragment();
 
         Toast.makeText
             (this, "Welcome, " + authInfo.getUser().name, Toast.LENGTH_SHORT)
             .show();
+    }
+
+    void createStreamFragment() {
+        stream = new StreamFragment(twitterApi, imageLoader);
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.flStream, stream);
+        ft.commit();
+        stream.getNextPage();
     }
 
 	@Override
@@ -137,73 +132,14 @@ public class StreamActivity
         startActivityForResult(i, REQUEST_COMPOSE);
     }
 
-    // TweetsArrayAdapter.ActionCallbacks
-    public void setImage(Uri uri, ImageView v) {
-        imageLoader.displayImage(uri.toString(), v);
-    }
-
-    // AbsListView.OnScrollListener callbacks
-    public void onScroll(AbsListView view, int firstVisibleItem,
-                         int visibleItemCount, int totalItemCount)
-    {
-        //Log.d("DEBUG", "onScroll(" + view + ", " + firstVisibleItem +
-        //      ", " + visibleItemCount + ", " + totalItemCount + ")");
-        if (tweetsAdapter == null)
-            return;
-        if (firstVisibleItem + visibleItemCount == tweetsAdapter.getCount()) {
-            //Log.d("DEBUG", "let's get some more items");
-            getNextPage();
-        }
-        else {
-            //Log.d("DEBUG", "We already have " + tweetsAdapter.getCount() +
-            //      " items");
-        }
-    }
-
-    public void	onScrollStateChanged(AbsListView view, int scrollState) {
-        Log.d("DEBUG", "Scrolling!  state = " + scrollState);
-    }
-
-    private void getNextPage() {
-        if (getUsersCall != null) {
-            Log.d("DEBUG", "ignoring getNextPage(); client active");
-        }
-        else {
-            int numItems = tweetsAdapter.getCount();
-            if (numItems > 0)
-                max_id = tweetsAdapter.getItem(numItems - 1).id_str;
-            getUsersCall = twitterApi.getTweets
-                (TwitterApi.STATUS_HOME, max_id, this);
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data)
     {
         if (resultCode == RESULT_OK && requestCode == REQUEST_COMPOSE) {
             Log.d("DEBUG", "Got result!");
-            max_id = data.getStringExtra("tweet_id");
-            tweetsAdapter.clear();
-            getNextPage();
+            stream.setNextPage(data.getStringExtra("tweet_id"));
+            stream.getNextPage();
         }
-    }
-
-    // TwitterClient.Callbacks
-    public void onRestResponse(List<Twitter.Tweet> tweets) {
-        getUsersCall = null;
-        Log.d("DEBUG", "StreamActivity.onResponse called with " + tweets.size() + " tweets");
-        for (Twitter.Tweet tweet: tweets) {
-            tweetsAdapter.add(tweet);
-        }
-        tweetsAdapter.notifyDataSetChanged();
-    }
-
-    public void onRestFailure(Exception e) {
-        getUsersCall = null;
-        Toast.makeText
-            (this, "Error during API call: " + e.toString(),
-             Toast.LENGTH_LONG).show();
-        Log.d("DEBUG", "StreamActivity.onRestFailure - " + e);
     }
 }

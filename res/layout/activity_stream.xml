@@ -1,16 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-  <ListView
-     android:id="@+id/lvTweetStream"
+
+  <LinearLayout
+     android:id="@+id/llStreamButtons"
      android:layout_width="fill_parent"
      android:layout_height="wrap_content"
+     android:orientation="horizontal"
+     android:layout_alignParentTop="true"
      android:layout_alignParentLeft="true"
      android:layout_alignParentRight="true"
-     android:layout_alignParentTop="true"
+     >
+
+    <Button
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_gravity="bottom"
+       android:layout_weight="200"
+       android:background="@color/off_white"
+       android:text="@string/tab_home"
+       />
+
+    <Button
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_gravity="bottom"
+       android:layout_weight="200"
+       android:background="@color/off_white"
+       android:text="@string/tab_mentions"
+       />
+
+  </LinearLayout>
+
+  <FrameLayout
+     android:id="@+id/flStream"
+     android:layout_width="fill_parent"
+     android:layout_height="fill_parent"
+     android:layout_below="@id/llStreamButtons"
+     android:layout_alignParentBottom="true"
+     android:layout_alignParentLeft="true"
+     android:layout_alignParentRight="true"
      />
-</LinearLayout>
+</RelativeLayout>
 

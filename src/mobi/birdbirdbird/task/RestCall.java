@@ -35,13 +35,14 @@ public class RestCall<T>
     protected T doInBackground(OAuthRequest... request) {
         T converted = null;
         excInfo = null;
-        Log.d("DEBUG", "RestCall: " + request);
+        Log.d("INFO", "RestCall: " + request[0].getVerb() +
+              " " + request[0].getUrl());
         try {
             Response rs = request[0].send();
             if (rs.isSuccessful()) {
                 Log.d("DEBUG", "Success!");
                 converted = (T) om.readValue(rs.getStream(), jt);
-                Log.d("DEBUG", "Converted!");
+                //Log.d("DEBUG", "Converted!");
             }
             else {
                 throw new Exception
@@ -53,7 +54,7 @@ public class RestCall<T>
             Log.d("DEBUG", "Erp.  Exception " + e);
             excInfo = e;
         }
-        Log.d("DEBUG", "Returning!  Val = " + converted);
+        //Log.d("DEBUG", "Returning!  Val = " + converted);
         return converted;
     }
 

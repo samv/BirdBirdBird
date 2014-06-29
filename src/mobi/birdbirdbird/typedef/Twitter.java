@@ -23,6 +23,16 @@ public class Twitter implements Serializable {
     public static class Tweet implements Serializable {
         public Tweet() { }
 
+        public boolean isAfter(Tweet other) {
+            return this.getId() > other.getId();
+        }
+        public boolean isBefore(Tweet other) {
+            return this.getId() < other.getId();
+        }
+
+        public long getId() {
+            return Long.parseLong(id_str);
+        }
         public String id_str;
         @JsonFormat(shape=JsonFormat.Shape.STRING,
                     pattern="EEE MMM dd HH:mm:ss zzz yyyy")
