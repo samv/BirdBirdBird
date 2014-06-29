@@ -48,8 +48,8 @@ public class TwitterAuthInfo {
     }
 
     private void _secrets() {
-        consumerKey = "vcnRcD4MXBzftlB8CsEMBX0E9";
-        consumerSecret = "3e8YgygBfmJ6zKPLX8sSUmIKldrmC8yJEPHYxGfIgL58ryMxet";
+        consumerKey = "TZk5fZQx8GhzmtzInELzcZguD";
+        consumerSecret = "j40Rl3Ut1zK67ebyPqO3Zk8sF018ELLBUNXnlsYEX3rMewl462";
     }
 
     public TwitterAuthInfo(SharedPreferences prefs) {

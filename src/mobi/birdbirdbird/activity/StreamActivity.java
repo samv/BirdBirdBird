@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -32,14 +33,18 @@ import org.scribe.model.Verb;
 public class StreamActivity
     extends Activity
     implements MenuItem.OnMenuItemClickListener,
-               View.OnCreateContextMenuListener
+               View.OnCreateContextMenuListener,
+               View.OnClickListener
 {
     private TwitterApi twitterApi;
     private AsyncTask getUsersCall;
     private TwitterAuthInfo authInfo;
     private SharedPreferences prefs;
-    private StreamFragment stream;
+    private StreamFragment home;
+    private StreamFragment mentions;
     private ImageLoader imageLoader;
+    private Button btnHome;
+    private Button btnMentions;
 
     public void loadAuth() {
         prefs = getSharedPreferences("AuthData", MODE_PRIVATE);
@@ -79,19 +84,54 @@ public class StreamActivity
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(config);
 
-        createStreamFragment();
+        home = createStreamFragment(TwitterApi.STATUS_HOME);
 
         Toast.makeText
             (this, "Welcome, " + authInfo.getUser().name, Toast.LENGTH_SHORT)
             .show();
+
+        connectButtons();
     }
 
-    void createStreamFragment() {
-        stream = new StreamFragment(twitterApi, imageLoader);
+    void connectButtons() {
+        btnHome = (Button) findViewById(R.id.btnHome);
+        btnHome.setOnClickListener(this);
+        btnMentions = (Button) findViewById(R.id.btnMentions);
+        btnMentions.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+        case R.id.btnHome:
+            chooseStream(home);
+            home.getNewTweets();
+            break;
+        case R.id.btnMentions:
+            if (mentions != null) {
+                chooseStream(mentions);
+                mentions.getNewTweets();
+            }
+            else
+                mentions = createStreamFragment(TwitterApi.STATUS_MENTIONS);
+            break;
+        default:
+            Log.d("WARNING", "unknown click source");
+            break;
+        }
+    }
+
+    StreamFragment createStreamFragment(String endpoint) {
+        StreamFragment stream = new StreamFragment(twitterApi, imageLoader, endpoint);
+        chooseStream(stream);
+        stream.getTweets();
+        return stream;
+    }
+
+    void chooseStream(StreamFragment stream) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.flStream, stream);
         ft.commit();
-        stream.getNextPage();
     }
 
 	@Override
@@ -138,8 +178,7 @@ public class StreamActivity
     {
         if (resultCode == RESULT_OK && requestCode == REQUEST_COMPOSE) {
             Log.d("DEBUG", "Got result!");
-            stream.setNextPage(data.getStringExtra("tweet_id"));
-            stream.getNextPage();
+            home.getNewTweets();
         }
     }
 }

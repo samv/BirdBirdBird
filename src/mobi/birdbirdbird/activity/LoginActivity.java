@@ -101,6 +101,10 @@ public class LoginActivity
 
     // TwitterOaLoginTask.Callbacks
     public void onOaLoginFailure(Exception e) {
+        Toast.makeText
+            (this, "OAuth Failure: " + e.toString(), Toast.LENGTH_LONG)
+            .show();
+
         Log.d("DEBUG", "LoginActivity.onOaLoginFailure(" + e + ")");
         authInfo.clearSession();
         saveAuth();

@@ -50,13 +50,13 @@ Week 3 Stories:
 Week 4 Stories:
 
 
-* ☐ User can switch between Timeline and Mention views using tabs.
+* ☑ User can switch between Timeline and Mention views using tabs.
 
-* ☐ User can view their home timeline tweets.
+* ☑ User can view their home timeline tweets.
 
-  * ☐ User can view the recent mentions of their username.
+  * ☑ User can view the recent mentions of their username.
 
-  * ☐ User can scroll to bottom of either of these lists and new tweets will load ("infinite scroll")
+  * ☑ User can scroll to bottom of either of these lists and new tweets will load ("infinite scroll")
 
   * ☐ Optional: Implement tabs in a gingerbread-compatible approach
 

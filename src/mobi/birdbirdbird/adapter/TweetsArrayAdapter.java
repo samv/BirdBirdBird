@@ -138,6 +138,8 @@ public class TweetsArrayAdapter
     }
 
     public void merge(List<Twitter.Tweet> tweets) {
+        if (tweets.size() == 0)
+            return;
         int size = getCount();
         int oldest = size - 1;
         if ((size == 0) || (getItem(oldest).isAfter(tweets.get(0)))) {

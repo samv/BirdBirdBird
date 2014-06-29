@@ -38,28 +38,34 @@ public class StreamFragment
 {
     private ListView lvTweetStream;
     private TweetsArrayAdapter tweetsAdapter;
-    private ArrayList<Twitter.Tweet> tweets;
+    private ArrayList<Twitter.Tweet> tweets = null;
     private String max_id;
     private ImageLoader imageLoader;
     private TwitterApi twitterApi;
     private Activity activity;
+    private String endpoint;
 
-    public StreamFragment(TwitterApi twitterApi, ImageLoader imageLoader) {
+    public StreamFragment(TwitterApi twitterApi, ImageLoader imageLoader, String endpoint) {
         this.imageLoader = imageLoader;
         this.twitterApi = twitterApi;
+        this.endpoint = endpoint;
+        Log.d("DEBUG", "NEW: Stream Fragment " + endpoint);
     }
 
     @Override
     public void onAttach(Activity activity)
     {
+        Log.d("DEBUG", "ATTACH: Stream Fragment " + endpoint);
         super.onAttach(activity);
         this.activity = activity;
     }
 
     @Override
 	public void onCreate(Bundle savedInstanceState) {
+        Log.d("DEBUG", "CREATE: Stream Fragment " + endpoint);
 		super.onCreate(savedInstanceState);
-        tweets = new ArrayList<Twitter.Tweet>();
+        if (tweets == null)
+            tweets = new ArrayList<Twitter.Tweet>();
         tweetsAdapter = new TweetsArrayAdapter(activity, tweets, this);
     }
 
@@ -67,7 +73,7 @@ public class StreamFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        Log.d("DEBUG", "StreamFragment.onCreateView()");
+        Log.d("DEBUG", "CREATE VIEW: Stream Fragment " + endpoint);
         View v = inflater.inflate(R.layout.fragment_stream, container, false);
         // connect tweet stream
         lvTweetStream = (ListView) v.findViewById(R.id.lvTweetStream);
@@ -90,8 +96,7 @@ public class StreamFragment
         if (tweetsAdapter == null)
             return;
         if (firstVisibleItem + visibleItemCount == tweetsAdapter.getCount()) {
-            //Log.d("DEBUG", "let's get some more items");
-            getNextPage();
+            getTweets();
         }
         else {
             //Log.d("DEBUG", "We already have " + tweetsAdapter.getCount() +
@@ -103,38 +108,116 @@ public class StreamFragment
         //Log.d("DEBUG", "Scrolling!  state = " + scrollState);
     }
 
+    private AsyncTask getNewTweetsCall;
     private AsyncTask getTweetsCall;
 
-    private String maxId;
+    private boolean wantNew = false;
+    private boolean atEnd = false;
 
-    public void getNextPage() {
+    public void getTweets() {
         if (tweetsAdapter == null) {
             //Log.d("DEBUG", "not ready; not getting anything yet");
         }
-        else if (getTweetsCall != null) {
-            //Log.d("DEBUG", "ignoring getNextPage(); client active");
+        else if ((getTweetsCall != null) ||
+                 (getNewTweetsCall != null)) {
+            Log.d("DEBUG", "ignoring getTweets(); client active");
+        }
+        else if (!wantNew && atEnd) {
+            Log.d("DEBUG", "reached end of results!");
         }
         else {
-            int numItems = tweetsAdapter.getCount();
-            String max_id = maxId;
-            if ((max_id == null) && (numItems > 0))
-                max_id = tweetsAdapter.getItem(numItems - 1).id_str;
-            getTweetsCall = twitterApi.getTweets
-                (TwitterApi.STATUS_HOME, max_id, this);
-            maxId = null;
+            if (wantNew) {
+                String since_id = null;
+                if (tweetsAdapter.getCount() > 0)
+                    since_id = tweetsAdapter.getItem(0).id_str;
+                Log.d("DEBUG", "fetching tweets since " + since_id);
+                getNewTweetsCall = twitterApi.getTweets
+                    (endpoint, null, since_id, this);
+                wantNew = false;
+            }
+            else {
+                int numItems = tweetsAdapter.getCount();
+                if ((max_id == null) && (numItems > 0))
+                    max_id = tweetsAdapter.getItem(numItems - 1).id_str;
+                Log.d("DEBUG", "fetching tweets before " + max_id);
+                getTweetsCall = twitterApi.getTweets
+                    (endpoint, max_id, null, this);
+            }
         }
     }
-    public void setNextPage(String maxId) {
-        this.maxId = maxId;
+
+    public void getNewTweets() {
+        wantNew = true;
+        getTweets();
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("DEBUG", "RESUME: Stream Fragment " + endpoint);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("DEBUG", "PAUSE: Stream Fragment " + endpoint);
+        wantNew = false;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("DEBUG", "DESTROY VIEW: Stream Fragment " + endpoint);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        tweetsAdapter = null;
+        Log.d("DEBUG", "DESTROY: Stream Fragment " + endpoint);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (getTweetsCall != null) {
+            getTweetsCall.cancel(true);
+            getTweetsCall = null;
+        }
+        if (getNewTweetsCall != null) {
+            getNewTweetsCall.cancel(true);
+            getNewTweetsCall = null;
+        }
+        Log.d("DEBUG", "STOP: Stream Fragment " + endpoint);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d("DEBUG", "DETACH: Stream Fragment " + endpoint);
+        this.activity = null;
     }
 
     // TwitterClient.Callbacks
     public void onRestResponse(List<Twitter.Tweet> tweets) {
-        getTweetsCall = null;
+        boolean scrollUp = false;
+        if (getTweetsCall != null) {
+            if (tweets.size() < TwitterApi.MIN_TWEETS_EXPECTED)
+                atEnd = true;
+            getTweetsCall = null;
+            if (wantNew)
+                getTweets();
+        }
+        else {
+            getNewTweetsCall = null;
+            scrollUp = true;
+        }
         Log.d("DEBUG", "StreamFragment.onRestResponse called with " +
               tweets.size() + " tweets");
         tweetsAdapter.merge(tweets);
         tweetsAdapter.notifyDataSetChanged();
+        if (scrollUp)
+            lvTweetStream.smoothScrollToPosition(0);
     }
 
     public void onRestFailure(Exception e) {
