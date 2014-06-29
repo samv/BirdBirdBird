@@ -17,12 +17,14 @@ import android.widget.Toast;
 import mobi.birdbirdbird.R;
 import mobi.birdbirdbird.adapter.TweetsArrayAdapter;
 import mobi.birdbirdbird.typedef.Twitter;
+import mobi.birdbirdbird.model.TwitterApi;
 import mobi.birdbirdbird.model.TwitterAuthInfo;
-import mobi.birdbirdbird.task.TwitterClient;
+import mobi.birdbirdbird.task.RestListCall;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import java.util.ArrayList;
+import java.util.List;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Verb;
 
@@ -32,14 +34,15 @@ public class StreamActivity
                MenuItem.OnMenuItemClickListener,
                AbsListView.OnScrollListener,
                View.OnCreateContextMenuListener,
-               TwitterClient.Callbacks
+               RestListCall.RS<Twitter.Tweet>
 {
     private ListView lvTweetStream;
     private TweetsArrayAdapter tweetsAdapter;
     private ArrayList<Twitter.Tweet> tweets;
     private String max_id;
     private ImageLoader imageLoader;
-    private TwitterClient tc;
+    private TwitterApi twitterApi;
+    private AsyncTask getUsersCall;
     private TwitterAuthInfo authInfo;
     private SharedPreferences prefs;
 
@@ -71,9 +74,7 @@ public class StreamActivity
             return;
         }
 
-        tc = new TwitterClient
-            (authInfo, new TypeReference<ArrayList<Twitter.Tweet>>() {},
-             this);
+        twitterApi = new TwitterApi(authInfo);
 
         // init the imageloader
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder
@@ -164,14 +165,15 @@ public class StreamActivity
     }
 
     private void getNextPage() {
-        if (tc.getStatus() != AsyncTask.Status.PENDING) {
-            //Log.d("DEBUG", "ignoring getNextPage(); client not ready");
+        if (getUsersCall != null) {
+            Log.d("DEBUG", "ignoring getNextPage(); client active");
         }
         else {
             int numItems = tweetsAdapter.getCount();
             if (numItems > 0)
                 max_id = tweetsAdapter.getItem(numItems - 1).id_str;
-            tc.getTweets(TwitterClient.HOME_TIMELINE, max_id);
+            getUsersCall = twitterApi.getTweets
+                (TwitterApi.STATUS_HOME, max_id, this);
         }
     }
 
@@ -188,17 +190,20 @@ public class StreamActivity
     }
 
     // TwitterClient.Callbacks
-    public void onResponse(Object rs) {
-        Log.d("DEBUG", "StreamActivity.onResponse called with " + rs);
-        tweetsAdapter.addAll((ArrayList<Twitter.Tweet>) rs);
+    public void onRestResponse(List<Twitter.Tweet> tweets) {
+        getUsersCall = null;
+        Log.d("DEBUG", "StreamActivity.onResponse called with " + tweets.size() + " tweets");
+        for (Twitter.Tweet tweet: tweets) {
+            tweetsAdapter.add(tweet);
+        }
         tweetsAdapter.notifyDataSetChanged();
-        tc = new TwitterClient
-                (authInfo,
-                 new TypeReference<ArrayList<Twitter.Tweet>>() {},
-                 this);
     }
 
-    public void onFailure(Exception e) {
-        Log.d("DEBUG", "StreamActivity.onFailure - " + e);
+    public void onRestFailure(Exception e) {
+        getUsersCall = null;
+        Toast.makeText
+            (this, "Error during API call: " + e.toString(),
+             Toast.LENGTH_LONG).show();
+        Log.d("DEBUG", "StreamActivity.onRestFailure - " + e);
     }
 }

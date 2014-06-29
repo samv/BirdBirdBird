@@ -48,7 +48,7 @@ public class TweetsArrayAdapter
     @Override
     public View getView(int position, View recycleView, ViewGroup parent) {
         // Get the data item for this position
-        Twitter.Tweet tweet = getItem(position);
+        Twitter.Tweet tweet = this.getItem(position);
         Twitter.User user = tweet.user;
 
         View view;

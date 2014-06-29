@@ -11,21 +11,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-
-import org.scribe.model.OAuthRequest;
-
+import android.widget.Toast;
 import mobi.birdbirdbird.R;
-import mobi.birdbirdbird.task.TwitterClient;
-import mobi.birdbirdbird.task.TwitterOaLoginTask;
+import mobi.birdbirdbird.model.TwitterApi;
 import mobi.birdbirdbird.model.TwitterAuthInfo;
+import mobi.birdbirdbird.task.RestCall;
+import mobi.birdbirdbird.task.TwitterOaLoginTask;
 import mobi.birdbirdbird.typedef.Twitter;
+import org.scribe.model.OAuthRequest;
 
 public class LoginActivity
     extends Activity
     implements View.OnClickListener,
                MenuItem.OnMenuItemClickListener,
                TwitterOaLoginTask.Callbacks,
-               TwitterClient.Callbacks
+               RestCall.RS<Twitter.User>
 {
     private TwitterOaLoginTask loginTask;
     private ImageButton btnLogin;
@@ -107,8 +107,11 @@ public class LoginActivity
         e.printStackTrace();
     }
 
-    public void onFailure(Exception e) {
-        Log.d("DEBUG", "LoginActivity.onFailure(" + e + ")");
+    public void onRestFailure(Exception e) {
+        Toast.makeText
+            (this, "Error during API call: " + e.toString(),
+             Toast.LENGTH_LONG).show();
+        Log.d("DEBUG", "LoginActivity.onRestFailure(" + e + ")");
         authInfo.clearSession();
         saveAuth();
         e.printStackTrace();
@@ -133,10 +136,9 @@ public class LoginActivity
         }
     }
 
-    // TwitterClient.Callbacks
-    public void onResponse(Object user) {
-        Log.d("DEBUG", "LoginActivity.onResult(" + user + ")");
-        this.authInfo.setUser((Twitter.User) user);
+    public void onRestResponse(Twitter.User user) {
+        Log.d("DEBUG", "LoginActivity.onRestResponse(" + user + ")");
+        this.authInfo.setUser(user);
         saveAuth();
         openStream();
     }
@@ -155,9 +157,8 @@ public class LoginActivity
 	}
 
     private void getUser() {
-        TwitterClient tc = new TwitterClient
-            (authInfo, Twitter.User.class, this);
-        tc.getUser(TwitterClient.VERIFY_CREDENTIALS);
+        TwitterApi twitterApi = new TwitterApi(authInfo);
+        twitterApi.getUser(TwitterApi.ACCOUNT_VERIFY, this);
     }
 
 	@Override

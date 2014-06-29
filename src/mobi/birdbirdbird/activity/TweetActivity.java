@@ -12,16 +12,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import mobi.birdbirdbird.R;
-import mobi.birdbirdbird.typedef.Twitter;
-import mobi.birdbirdbird.model.TwitterAuthInfo;
-import mobi.birdbirdbird.task.TwitterClient;
+import android.widget.Toast;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import mobi.birdbirdbird.R;
+import mobi.birdbirdbird.model.TwitterApi;
+import mobi.birdbirdbird.model.TwitterAuthInfo;
+import mobi.birdbirdbird.task.RestCall;
+import mobi.birdbirdbird.typedef.Twitter;
 
 public class TweetActivity extends Activity 
     implements View.OnClickListener,
-               TwitterClient.Callbacks
+               RestCall.RS<Twitter.Tweet>
 {
 
     private ImageView imgProfile;
@@ -30,6 +32,7 @@ public class TweetActivity extends Activity
     private Button btnTweet;
     private EditText etTweetText;
     private TextView tvCharsLeft;
+    private TwitterApi twitterApi;
 
     // FIXME - base class eg AuthenticatedActivity ?
     private TwitterAuthInfo authInfo;
@@ -49,23 +52,26 @@ public class TweetActivity extends Activity
         connectWidgets();
     }
 
-    public void onResponse(Object rs) {
+    public void onRestResponse(Twitter.Tweet rs) {
         Log.d("DEBUG", "TweetActivity onResponse called with " + rs);
         Intent i = new Intent();
-        i.putExtra("tweet_id", ((Twitter.Tweet) rs).id_str);
+        i.putExtra("tweet_id", rs.id_str);
         setResult(RESULT_OK, i);
         this.finish();
     }
 
-    public void onFailure(Exception e) {
-        Log.d("DEBUG", "TweetActivity failed; " + e);
+    public void onRestFailure(Exception e) {
+        Toast.makeText
+            (this, "Error during API call: " + e.toString(),
+             Toast.LENGTH_LONG).show();
     }
 
     public void onClick(View v) {
-        TwitterClient tc = new TwitterClient(authInfo, Twitter.Tweet.class, this);
+        twitterApi = new TwitterApi(authInfo);
         Twitter.Tweet status = new Twitter.Tweet();
         status.text = etTweetText.getText().toString();
-        tc.postTweet(TwitterClient.TWEET_NEW, status);
+
+        twitterApi.postTweet(TwitterApi.STATUS_UPDATE, status, this);
     }
 
     public void connectWidgets() {
