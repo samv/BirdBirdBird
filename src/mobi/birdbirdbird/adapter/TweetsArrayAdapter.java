@@ -1,5 +1,5 @@
 
-package mobi.birdbirdbird;
+package mobi.birdbirdbird.adapter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import mobi.birdbirdbird.TwitterApi;
+import mobi.birdbirdbird.R;
+import mobi.birdbirdbird.typedef.TwitterApi;
 
 public class TweetsArrayAdapter
     extends ArrayAdapter<TwitterApi.Tweet>

@@ -1,5 +1,5 @@
 
-package mobi.birdbirdbird;
+package mobi.birdbirdbird.task;
 
 import java.util.HashMap;
 
@@ -16,7 +16,8 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
-import mobi.birdbirdbird.TwitterAuthInfo;
+import mobi.birdbirdbird.model.TwitterAuthInfo;
+import mobi.birdbirdbird.typedef.TwitterApi;
 
 // TODO: should be able to make this work:
 

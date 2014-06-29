@@ -1,4 +1,4 @@
-package mobi.birdbirdbird;
+package mobi.birdbirdbird.task;
 
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -11,7 +11,7 @@ import org.scribe.model.Token;
 import org.scribe.model.OAuthConstants;
 import org.scribe.oauth.OAuthService;
 
-import mobi.birdbirdbird.TwitterAuthInfo;
+import mobi.birdbirdbird.model.TwitterAuthInfo;
 
 public class TwitterLoginTask extends AsyncTask<TwitterAuthInfo, String, TwitterAuthInfo> {
 

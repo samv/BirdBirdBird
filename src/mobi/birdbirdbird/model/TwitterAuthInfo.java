@@ -1,10 +1,10 @@
 
-package mobi.birdbirdbird;
+package mobi.birdbirdbird.model;
 
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
-import mobi.birdbirdbird.TwitterApi;
+import mobi.birdbirdbird.typedef.TwitterApi;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

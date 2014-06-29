@@ -15,7 +15,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-import mobi.birdbirdbird.TwitterApi;
+import mobi.birdbirdbird.typedef.TwitterApi;
 
 
 public class JsonTests {

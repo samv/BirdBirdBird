@@ -24,7 +24,7 @@
        android:value="1" />
 
     <activity
-       android:name="mobi.birdbirdbird.LoginActivity"
+       android:name="mobi.birdbirdbird.activity.LoginActivity"
        android:label="@string/app_name" >
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -42,11 +42,11 @@
       </intent-filter>
     </activity>
     <activity
-       android:name="StreamActivity"
+       android:name="mobi.birdbirdbird.activity.StreamActivity"
        android:label="@string/title_stream"
        />
     <activity
-       android:name="TweetActivity"
+       android:name="mobi.birdbirdbird.activity.TweetActivity"
        android:label="@string/title_tweet"
        />
   </application>

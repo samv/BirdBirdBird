@@ -1,5 +1,5 @@
 
-package mobi.birdbirdbird;
+package mobi.birdbirdbird.typedef;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
