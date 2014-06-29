@@ -1,4 +1,4 @@
-package as.streamed;
+package mobi.birdbirdbird;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,8 +14,8 @@ import android.widget.Button;
 
 import org.scribe.model.OAuthRequest;
 
-import as.streamed.TwitterLoginTask;
-import as.streamed.TwitterAuthInfo;
+import mobi.birdbirdbird.TwitterLoginTask;
+import mobi.birdbirdbird.TwitterAuthInfo;
 
 public class LoginActivity
     extends Activity

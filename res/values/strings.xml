@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Streamed.As</string>
+    <string name="app_name">BirdBirdBird</string>
 
     <string name="action_login">Log in</string>
     <string name="action_logout">Log out</string>
@@ -11,7 +11,7 @@
     <string name="label_login">Log in with Twitter</string>
     <string name="label_tweet">Tweet</string>
 
-    <string name="title_stream">Streamed.As Stream</string>
+    <string name="title_stream">BirdBirdBird Stream</string>
 
     <string name="title_tweet">Compose Tweet</string>
 
@@ -19,8 +19,8 @@
       What\'s happening?
     </string>
 
-    <string name="eg_name">Streamed.As Bro</string>
-    <string name="eg_screen_name">StreamedAs</string>
+    <string name="eg_name">Bill Shakespeare</string>
+    <string name="eg_screen_name">WilliamS</string>
     <string name="eg_tweet_text">
       When birds do sing, hey ding a ding, ding. 
       Sweet lovers love the spring.

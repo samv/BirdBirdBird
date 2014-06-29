@@ -1,5 +1,5 @@
 
-package as.streamed;
+package mobi.birdbirdbird;
 
 
 import android.app.Activity;
@@ -12,9 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import as.streamed.TwitterApi;
-import as.streamed.TwitterAuthInfo;
-import as.streamed.TwitterClient;
+import mobi.birdbirdbird.TwitterApi;
+import mobi.birdbirdbird.TwitterAuthInfo;
+import mobi.birdbirdbird.TwitterClient;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 

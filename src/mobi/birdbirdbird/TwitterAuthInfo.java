@@ -1,10 +1,10 @@
 
-package as.streamed;
+package mobi.birdbirdbird;
 
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
-import as.streamed.TwitterApi;
+import mobi.birdbirdbird.TwitterApi;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -17,7 +17,7 @@ public class TwitterAuthInfo {
 
     private String consumerKey;
     private String consumerSecret;
-    private String callbackUrl = "oauth://streamed.as";
+    private String callbackUrl = "oauth://birdbirdbird.mobi";
     private String requestToken;
     private String requestSecret;
     public String authorizeUrl; // FIXME

@@ -1,5 +1,5 @@
 
-package as.streamed;
+package mobi.birdbirdbird;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -91,7 +91,7 @@ android {
     }
 
     defaultConfig {
-        testApplicationId "as.streamed.test"
+        testApplicationId "mobi.birdbirdbird.test"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
         testFunctionalTest true
     }

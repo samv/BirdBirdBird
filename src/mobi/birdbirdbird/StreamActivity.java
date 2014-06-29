@@ -1,4 +1,4 @@
-package as.streamed;
+package mobi.birdbirdbird;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,10 +14,10 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
-import as.streamed.TweetsArrayAdapter;
-import as.streamed.TwitterApi;
-import as.streamed.TwitterAuthInfo;
-import as.streamed.TwitterClient;
+import mobi.birdbirdbird.TweetsArrayAdapter;
+import mobi.birdbirdbird.TwitterApi;
+import mobi.birdbirdbird.TwitterAuthInfo;
+import mobi.birdbirdbird.TwitterClient;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;

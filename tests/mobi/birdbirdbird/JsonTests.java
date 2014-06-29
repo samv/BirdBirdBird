@@ -1,5 +1,5 @@
 
-package as.streamed;
+package mobi.birdbirdbird;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-import as.streamed.TwitterApi;
+import mobi.birdbirdbird.TwitterApi;
 
 
 public class JsonTests {
