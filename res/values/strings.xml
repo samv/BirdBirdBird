@@ -17,6 +17,7 @@
     <string name="title_stream">BirdBirdBird Stream</string>
 
     <string name="title_tweet">Compose Tweet</string>
+    <string name="title_profile">View Profile</string>
 
     <string name="hint_tweet_text">
       What\'s happening?
@@ -31,5 +32,12 @@
     <string name="eg_tweet_age">415y</string>
     <string name="eg_retweet_count">23</string>
     <string name="eg_favorite_count">238</string>
+    <string name="eg_tag_line">Idiomatic, I am!</string>
+    <string name="eg_location">London, England</string>
+
+    <string name="title_statuses_count">Tweets</string>
+    <string name="title_friends_count">Following</string>
+    <string name="title_followers_count">Followers</string>
+    <string name="title_favourites_count">Favorites</string>
 
 </resources>

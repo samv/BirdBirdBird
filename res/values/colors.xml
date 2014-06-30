@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
- <color name="off_white">#ffffdd</color>
  <color name="transparent">#00000000</color>
  <color name="black">#2e3436</color>
  <color name="red">#8b1a1a</color>
@@ -9,7 +8,7 @@
  <color name="blue">#104e8b</color>
  <color name="magenta">#68228b</color>
  <color name="cyan">#008693</color>
- <color name="white">#cdcdb4</color>
+ <color name="white">#ffffdd</color>
  <color name="grey">#7a7a7a</color>
  <color name="orange_red">#cd3700</color>
  <color name="sea_green">#2e8b57</color>
@@ -18,4 +17,7 @@
  <color name="pink">#cd6090</color>
  <color name="marine">#00868b</color>
  <color name="orange">#cd6600</color>
+
+ <color name="profile_default">#2e8b57</color>
+
 </resources>

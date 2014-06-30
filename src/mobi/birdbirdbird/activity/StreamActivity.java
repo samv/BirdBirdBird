@@ -34,6 +34,7 @@ public class StreamActivity
     extends Activity
     implements MenuItem.OnMenuItemClickListener,
                View.OnCreateContextMenuListener,
+               StreamFragment.Callbacks,
                View.OnClickListener
 {
     private TwitterApi twitterApi;
@@ -58,6 +59,31 @@ public class StreamActivity
         editor.commit();
     }
 
+    public TwitterAuthInfo getAuthInfo() {
+        if (authInfo == null)
+            loadAuth();
+        return authInfo;
+    }
+
+    public TwitterApi getTwitterApi() {
+        if (twitterApi == null)
+            twitterApi = new TwitterApi(getAuthInfo());
+        Log.d("DEBUG", "returning api: " + twitterApi);
+        return twitterApi;
+    }
+
+    public ImageLoader getImageLoader() {
+        if (imageLoader == null) {
+            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder
+                (getApplicationContext())
+                .writeDebugLogs()
+                .build();
+            imageLoader = ImageLoader.getInstance();
+            imageLoader.init(config);
+        }
+        return imageLoader;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -65,24 +91,11 @@ public class StreamActivity
         setContentView(R.layout.activity_stream);
         Log.d("DEBUG", "StreamActivity.onCreate()");
 
-        loadAuth();
-
-        Log.d("DEBUG", "StreamActivity.onCreate: authInfo = " + authInfo);
-        if (!authInfo.haveAccessToken()) {
+        if (!getAuthInfo().haveAccessToken()) {
             Log.d("DEBUG", "StreamActivity.onCreate: no access token, returning");
             this.finish();
             return;
         }
-
-        twitterApi = new TwitterApi(authInfo);
-
-        // init the imageloader
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder
-            (getApplicationContext())
-            .writeDebugLogs()
-            .build();
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(config);
 
         home = createStreamFragment(TwitterApi.STATUS_HOME);
 
@@ -122,7 +135,7 @@ public class StreamActivity
     }
 
     StreamFragment createStreamFragment(String endpoint) {
-        StreamFragment stream = new StreamFragment(twitterApi, imageLoader, endpoint);
+        StreamFragment stream = new StreamFragment(endpoint, this);
         chooseStream(stream);
         stream.getTweets();
         return stream;
@@ -132,6 +145,12 @@ public class StreamActivity
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.flStream, stream);
         ft.commit();
+    }
+
+    public void onProfileClick(Twitter.User user) {
+        Intent i = new Intent(this, ProfileActivity.class);
+        i.putExtra("user", user);
+        startActivity(i);
     }
 
 	@Override

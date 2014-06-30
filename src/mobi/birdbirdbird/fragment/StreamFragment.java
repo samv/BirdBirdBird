@@ -36,19 +36,22 @@ public class StreamFragment
                AbsListView.OnScrollListener,
                RestListCall.RS<Twitter.Tweet>
 {
+    public interface Callbacks {
+        abstract ImageLoader getImageLoader();
+        abstract TwitterApi getTwitterApi();
+        abstract void onProfileClick(Twitter.User user);
+    }
+    private Callbacks cb;
     private ListView lvTweetStream;
     private TweetsArrayAdapter tweetsAdapter;
     private ArrayList<Twitter.Tweet> tweets = null;
     private String max_id;
-    private ImageLoader imageLoader;
-    private TwitterApi twitterApi;
     private Activity activity;
     private String endpoint;
 
-    public StreamFragment(TwitterApi twitterApi, ImageLoader imageLoader, String endpoint) {
-        this.imageLoader = imageLoader;
-        this.twitterApi = twitterApi;
+    public StreamFragment(String endpoint, Callbacks cb) {
         this.endpoint = endpoint;
+        this.cb = cb;
         Log.d("DEBUG", "NEW: Stream Fragment " + endpoint);
     }
 
@@ -84,7 +87,7 @@ public class StreamFragment
 
     // TweetsArrayAdapter.ActionCallbacks
     public void setImage(Uri uri, ImageView v) {
-        imageLoader.displayImage(uri.toString(), v);
+        cb.getImageLoader().displayImage(uri.toString(), v);
     }
 
     // AbsListView.OnScrollListener callbacks
@@ -131,7 +134,7 @@ public class StreamFragment
                 if (tweetsAdapter.getCount() > 0)
                     since_id = tweetsAdapter.getItem(0).id_str;
                 Log.d("DEBUG", "fetching tweets since " + since_id);
-                getNewTweetsCall = twitterApi.getTweets
+                getNewTweetsCall = cb.getTwitterApi().getTweets
                     (endpoint, null, since_id, this);
                 wantNew = false;
             }
@@ -140,7 +143,9 @@ public class StreamFragment
                 if ((max_id == null) && (numItems > 0))
                     max_id = tweetsAdapter.getItem(numItems - 1).id_str;
                 Log.d("DEBUG", "fetching tweets before " + max_id);
-                getTweetsCall = twitterApi.getTweets
+                TwitterApi tapi = cb.getTwitterApi();
+                Log.d("DEBUG", "tapi = " + tapi);
+                getTweetsCall = tapi.getTweets
                     (endpoint, max_id, null, this);
             }
         }
@@ -226,5 +231,11 @@ public class StreamFragment
             (this.activity, "Error during API call: " + e.toString(),
              Toast.LENGTH_LONG).show();
         Log.d("DEBUG", "StreamFragment.onRestFailure - " + e);
+    }
+
+    public void onProfileClick(Twitter.User user) {
+        Log.d("DEBUG", "StreamFragment.onProfileClick(user = @" +
+              user.screen_name + ")");
+        cb.onProfileClick(user);
     }
 }

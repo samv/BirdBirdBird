@@ -21,6 +21,7 @@ import mobi.birdbirdbird.typedef.Twitter;
 
 public class TweetsArrayAdapter
     extends ArrayAdapter<Twitter.Tweet>
+    implements View.OnClickListener
 {
     public interface ActionCallbacks {
         //abstract void reply(Tweet tweet);
@@ -28,6 +29,7 @@ public class TweetsArrayAdapter
         //abstract boolean toggleFavorite(Tweet tweet);
         //abstract boolean toggleFollow(Tweet tweet);
         abstract void setImage(Uri uri, ImageView v);
+        abstract void onProfileClick(Twitter.User user);
     }
 
     private ActionCallbacks cb;
@@ -39,12 +41,8 @@ public class TweetsArrayAdapter
         super(context, 0, tweets);
         this.cb = acb;
         time = (new Date()).getTime();
-        activeViews = new HashMap<String, View>();
-        viewIds = new HashMap<Integer, String>();
     }
 
-    private HashMap<String, View> activeViews;
-    private HashMap<Integer, String> viewIds;
     public long time;
 
     @Override
@@ -58,21 +56,18 @@ public class TweetsArrayAdapter
         if (recycleView == null) {
             view = LayoutInflater.from(getContext())
                 .inflate(R.layout.view_tweet, parent, false);
-            viewId = new Integer(view.getId());
         }
         else {
-            viewId = new Integer(recycleView.getId());
-            activeViews.remove(viewIds.get(viewId));
             view = recycleView;
         }
-        viewIds.put(viewId, tweet.id_str);
-        activeViews.put(tweet.id_str, view);
+        view.setTag(new Integer(position));
+        Log.d("DEBUG", "View " + view + " now holds item " + position +
+              ", tweet " + tweet.id_str);
 
         maybeSetText(view.findViewById(R.id.tvName), user.name);
         maybeSetText(view.findViewById(R.id.tvScreenName),
                      "@" + user.screen_name);
         maybeSetText(view.findViewById(R.id.tvTweetText), tweet.text);
-
         setMutable(view, tweet);
 
         ImageView imgProfile = (ImageView) view.findViewById(R.id.imgProfile);
@@ -83,8 +78,26 @@ public class TweetsArrayAdapter
             imgProfile.setImageResource(R.drawable.profile_none);
             cb.setImage(Uri.parse(user.profile_image_url_https), imgProfile);
         }
+        imgProfile.setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        Log.d("DEBUG", "Received click to " + v);
+        switch (v.getId()) {
+        case R.id.imgProfile:
+            View row = (View) v.getParent();
+            cb.onProfileClick(getItem((Integer) row.getTag()).user);
+            break;
+        case View.NO_ID:
+            Log.d("DEBUG", "Source view has no ID");
+            break;
+        default:
+            Log.d("DEBUG", "Source view has ID " + v.getId());
+            break;
+        }
     }
 
     private void maybeSetText(View textView, String text) {

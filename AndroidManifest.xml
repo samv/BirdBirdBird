@@ -49,5 +49,9 @@
        android:name="mobi.birdbirdbird.activity.TweetActivity"
        android:label="@string/title_tweet"
        />
+    <activity
+       android:name="mobi.birdbirdbird.activity.ProfileActivity"
+       android:label="@string/title_profile"
+       />
   </application>
 </manifest>
