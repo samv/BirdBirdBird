@@ -27,6 +27,7 @@ public class TwitterApi {
     public static final String STATUS_HOME = "/statuses/home_timeline";
     public static final String STATUS_UPDATE = "/statuses/update";
     public static final String STATUS_MENTIONS = "/statuses/mentions_timeline";
+    public static final String USERS_SHOW = "/users/show";
 
     public TwitterApi(TwitterAuthInfo authInfo) {
         accessToken = authInfo.getAccessToken();
@@ -36,16 +37,27 @@ public class TwitterApi {
             (DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    public AsyncTask getUser(String endpoint,
+    public AsyncTask getUser(String endpoint, String userId,
+                             String screenName,
                              RestCall.RS<Twitter.User> callbacks)
     {
         OAuthRequest oar = new OAuthRequest
             (Verb.GET, TWITTER_API + endpoint + API_EXT);
+        if (userId != null)
+            oar.addQuerystringParameter("user_id", userId);
+        if (screenName != null)
+            oar.addQuerystringParameter("screen_name", screenName);
         service.signRequest(accessToken, oar);
 
         return new RestCall<Twitter.User>(om, callbacks)
             .setClass(Twitter.User.class)
             .execute(oar);
+    }
+
+    public AsyncTask getUser(String endpoint,
+                             RestCall.RS<Twitter.User> callbacks)
+    {
+        return getUser(endpoint, null, null, callbacks);
     }
 
     public AsyncTask getTweets(String endpoint, String max_id,
