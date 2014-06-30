@@ -100,7 +100,8 @@ public class StreamActivity
         home = createStreamFragment(TwitterApi.STATUS_HOME);
 
         Toast.makeText
-            (this, "Welcome, " + authInfo.getUser().name, Toast.LENGTH_SHORT)
+            (this, "Welcome, " + getAuthInfo().getUser().name,
+             Toast.LENGTH_SHORT)
             .show();
 
         connectButtons();

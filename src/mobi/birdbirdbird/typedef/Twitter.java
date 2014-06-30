@@ -3,6 +3,7 @@ package mobi.birdbirdbird.typedef;
 
 import android.graphics.Color;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Date;
@@ -106,6 +107,7 @@ public class Twitter implements Serializable {
             return this.getId() < other.getId();
         }
 
+        @JsonIgnore
         public long getId() {
             return Long.parseLong(id_str);
         }
