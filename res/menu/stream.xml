@@ -8,6 +8,13 @@
      />
 
   <item
+     android:id="@+id/miProfile"
+     android:orderInCategory="12"
+     android:showAsAction="always"
+     android:title="@string/action_me"
+     />
+
+  <item
      android:id="@+id/miLogout"
      android:orderInCategory="20"
      android:showAsAction="never"

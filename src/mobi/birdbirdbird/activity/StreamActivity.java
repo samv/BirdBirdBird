@@ -169,6 +169,10 @@ public class StreamActivity
         case (R.id.miAbout):
             Log.d("DEBUG", "About menu pressed");
             break;
+        case (R.id.miProfile):
+            Log.d("DEBUG", "Profile menu pressed");
+            onProfileClick(getAuthInfo().getUser());
+            break;
         case (R.id.miLogout):
             Log.d("DEBUG", "Logout menu button pressed");
             authInfo.clearAuth();
