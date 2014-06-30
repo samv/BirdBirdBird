@@ -87,7 +87,7 @@ public class TweetActivity extends Activity
             (authInfo.getUser().profile_image_url_https, imgProfile);
 
         tvName = (TextView) findViewById(R.id.tvName);
-        tvName.setText("@" + authInfo.getUser().name);
+        tvName.setText(authInfo.getUser().name);
         tvScreenName = (TextView) findViewById(R.id.tvScreenName);
         tvScreenName.setText("@" + authInfo.getUser().screen_name);
 

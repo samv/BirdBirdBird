@@ -20,7 +20,7 @@
        android:layout_height="wrap_content"
        android:layout_gravity="bottom"
        android:layout_weight="200"
-       android:background="@color/off_white"
+       android:background="@color/white"
        android:text="@string/tab_home"
        />
 
@@ -30,7 +30,7 @@
        android:layout_height="wrap_content"
        android:layout_gravity="bottom"
        android:layout_weight="200"
-       android:background="@color/off_white"
+       android:background="@color/white"
        android:text="@string/tab_mentions"
        />
 

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/off_white"
+    android:background="@color/white"
     >
 
   <ImageView
@@ -23,9 +23,10 @@
      android:layout_toRightOf="@id/imgProfile"
      android:layout_alignParentTop="true"
      android:layout_marginTop="8dp"
+     android:layout_marginLeft="8dp"
      android:typeface="sans"
      android:textStyle="bold"
-     android:textSize="12sp"
+     android:textSize="14sp"
      android:textColor="@color/black"
      />
 
@@ -36,10 +37,10 @@
      android:text="@string/eg_screen_name"
      android:layout_toRightOf="@id/imgProfile"
      android:layout_below="@id/tvName"
-     android:layout_marginTop="8dp"
+     android:layout_marginTop="4dp"
      android:layout_marginLeft="8dp"
      android:typeface="sans"
-     android:textSize="10sp"
+     android:textSize="12sp"
      android:textColor="@color/grey"
      />
 
@@ -52,6 +53,11 @@
      android:layout_marginTop="8dp"
      android:layout_marginRight="8dp"
      android:text="@string/label_tweet"
+     android:typeface="sans"
+     android:textAllCaps="true"
+     android:textSize="14sp"
+     android:background="@color/light_blue"
+     android:textColor="@color/white"
      />
 
   <EditText
