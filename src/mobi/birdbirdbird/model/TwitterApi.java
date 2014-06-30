@@ -27,6 +27,7 @@ public class TwitterApi {
     public static final String STATUS_HOME = "/statuses/home_timeline";
     public static final String STATUS_UPDATE = "/statuses/update";
     public static final String STATUS_MENTIONS = "/statuses/mentions_timeline";
+    public static final String STATUS_BY_USER = "/statuses/user_timeline";
     public static final String USERS_SHOW = "/users/show";
 
     public TwitterApi(TwitterAuthInfo authInfo) {
@@ -62,6 +63,7 @@ public class TwitterApi {
 
     public AsyncTask getTweets(String endpoint, String max_id,
                                String since_id,
+                               String userId, String screenName,
                                RestListCall.RS<Twitter.Tweet> callbacks)
     {
         OAuthRequest oar = new OAuthRequest
@@ -72,12 +74,23 @@ public class TwitterApi {
             oar.addQuerystringParameter("since_id", since_id);
         if (endpoint == STATUS_MENTIONS)
             oar.addQuerystringParameter("include_rts", "1");
+        if (userId != null)
+            oar.addQuerystringParameter("user_id", userId);
+        if (screenName != null)
+            oar.addQuerystringParameter("screen_name", screenName);
         oar.addQuerystringParameter("count", TWEET_COUNT_PARAM);
         service.signRequest(accessToken, oar);
 
         return new RestListCall<Twitter.Tweet>(om, callbacks)
             .setItemClass(Twitter.Tweet.class)
             .execute(oar);
+    }
+
+    public AsyncTask getTweets(String endpoint, String max_id,
+                               String since_id,
+                               RestListCall.RS<Twitter.Tweet> callbacks)
+    {
+        return getTweets(endpoint, max_id, since_id, null, null, callbacks);
     }
 
     public AsyncTask postTweet(String endpoint, Twitter.Tweet tweet,

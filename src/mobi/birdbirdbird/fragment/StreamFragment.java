@@ -48,10 +48,18 @@ public class StreamFragment
     private String max_id;
     private Activity activity;
     private String endpoint;
+    private String userId = null;
 
     public StreamFragment(String endpoint, Callbacks cb) {
         this.endpoint = endpoint;
         this.cb = cb;
+        Log.d("DEBUG", "NEW: Stream Fragment " + endpoint);
+    }
+
+    public StreamFragment(Twitter.User user, Callbacks cb) {
+        this.endpoint = TwitterApi.STATUS_BY_USER;
+        this.cb = cb;
+        this.userId = user.id_str;
         Log.d("DEBUG", "NEW: Stream Fragment " + endpoint);
     }
 
@@ -146,7 +154,7 @@ public class StreamFragment
                 TwitterApi tapi = cb.getTwitterApi();
                 Log.d("DEBUG", "tapi = " + tapi);
                 getTweetsCall = tapi.getTweets
-                    (endpoint, max_id, null, this);
+                    (endpoint, max_id, null, userId, null, this);
             }
         }
     }

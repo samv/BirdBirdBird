@@ -2,6 +2,7 @@
 package mobi.birdbirdbird.activity;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,8 +23,9 @@ import mobi.birdbirdbird.model.TwitterAuthInfo;
 import mobi.birdbirdbird.task.RestCall;
 import mobi.birdbirdbird.typedef.Twitter;
 
-public class ProfileActivity extends Activity 
-// implements RestCall<Twitter.User>.RS
+public class ProfileActivity
+    extends Activity 
+    implements StreamFragment.Callbacks
 {
     // might/should probably move some of the commonality with this
     // class vs TweetActivity into either a base class or a fragment.
@@ -41,7 +43,10 @@ public class ProfileActivity extends Activity
     private TextView tvFollowersCount;
     private TextView tvFavouritesCount;
 
+    private StreamFragment profileTweets;
+
     // FIXME - base class eg AuthenticatedActivity ?
+    private TwitterAuthInfo authInfo;
     private TwitterApi twitterApi;
     private Twitter.User user;
     private SharedPreferences prefs;
@@ -59,9 +64,19 @@ public class ProfileActivity extends Activity
         user = (Twitter.User)
             getIntent().getSerializableExtra("user");
         setUser(user);
+
+        createProfileTweetsFragment();
     }
 
-    private ImageLoader getImageLoader() {
+    void createProfileTweetsFragment() {
+        profileTweets = new StreamFragment(user, this);
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.flStream, profileTweets);
+        ft.commit();
+        profileTweets.getTweets();
+   }
+
+    public ImageLoader getImageLoader() {
         if (imageLoader == null) {
             ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder
                 (getApplicationContext())
@@ -114,5 +129,37 @@ public class ProfileActivity extends Activity
             getImageLoader().displayImage
                 (user.profile_banner_url, imgBanner);
         }
+    }
+
+    public void onProfileClick(Twitter.User user) {
+        if (this.user.id_str.equals(user.id_str)) {
+            Toast.makeText
+                (this, "I'm sorry, Dave. I'm afraid I can't let you do that.",
+                 Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Log.d("DEBUG", "Selected profile user " + this.user.id_str + " != " + user.id_str + ", so let's go!");
+            Intent i = new Intent(this, ProfileActivity.class);
+            i.putExtra("user", user);
+            startActivity(i);
+        }
+    }
+
+    public void loadAuth() {
+        prefs = getSharedPreferences("AuthData", MODE_PRIVATE);
+        authInfo = new TwitterAuthInfo(prefs);
+    }
+
+    public TwitterAuthInfo getAuthInfo() {
+        if (authInfo == null)
+            loadAuth();
+        return authInfo;
+    }
+
+    public TwitterApi getTwitterApi() {
+        if (twitterApi == null)
+            twitterApi = new TwitterApi(getAuthInfo());
+        Log.d("DEBUG", "returning api: " + twitterApi);
+        return twitterApi;
     }
 }
