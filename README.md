@@ -60,15 +60,15 @@ Week 4 Stories:
 
   * ☐ Optional: Implement tabs in a gingerbread-compatible approach
 
-* ☐ User can navigate to view their own profile
+* ☑ User can navigate to view their own profile
 
-  * ☐ User can see picture, tagline, # of followers, # of following, and tweets on their profile.
+  * ☑ User can see picture, tagline, # of followers, # of following, and tweets on their profile.
 
-* ☐ User can click on the profile image in any tweet to see another user's profile.
+* ☑ User can click on the profile image in any tweet to see another user's profile.
 
-  * ☐ User can see picture, tagline, # of followers, # of following, and tweets of clicked user.
+  * ☑ User can see picture, tagline, # of followers, # of following, and tweets of clicked user.
 
-  * ☐ Profile view should include that user's timeline
+  * ☑ Profile view should include that user's timeline
 
   * ☐ Optional: User can view following / followers list through the profile
 
@@ -86,7 +86,7 @@ Week 4 Stories:
 
     * ☐ Advanced: User can take favorite (and unfavorite) or reweet actions on a tweet
 
-  * ☐ Advanced: Improve the user interface and theme the app to feel twitter branded
+  * ☑ Advanced: Improve the user interface and theme the app to feel twitter branded
 
   * ☐ Advanced: User can search for tweets matching a particular query and see results
 
