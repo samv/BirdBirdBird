@@ -94,6 +94,8 @@ Week 4 Stories:
 
 ![Walk-through](demo.gif)
 
+(note: the error at the end of this demo has been fixed :))
+
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
