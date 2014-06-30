@@ -25,7 +25,8 @@ import mobi.birdbirdbird.typedef.Twitter;
 
 public class ProfileActivity
     extends Activity 
-    implements StreamFragment.Callbacks
+    implements StreamFragment.Callbacks,
+               RestCall.RS<Twitter.User>
 {
     // might/should probably move some of the commonality with this
     // class vs TweetActivity into either a base class or a fragment.
@@ -66,6 +67,9 @@ public class ProfileActivity
         setUser(user);
 
         createProfileTweetsFragment();
+
+        getTwitterApi().getUser
+            (TwitterApi.USERS_SHOW, user.id_str, null, this);
     }
 
     void createProfileTweetsFragment() {
@@ -102,10 +106,22 @@ public class ProfileActivity
         tvFavouritesCount = (TextView) findViewById(R.id.tvFavouritesCount);
     }
 
+    public void onRestResponse(Twitter.User user) {
+        this.user = user;
+        setUser(user);
+    }
+
+    public void onRestFailure(Exception e) {
+        Toast.makeText
+            (this, "Error during API call: " + e.toString(),
+             Toast.LENGTH_LONG).show();
+        Log.d("DEBUG", "ProfileActivity.onRestFailure - " + e);
+    }
+
     private void setUser(Twitter.User user) {
         tvName.setText(user.name);
-        tvScreenName.setText("@" + user.screen_name +
-                             " (joined: " + user.getWhen(time) + ")");
+        tvScreenName.setText("@" + user.screen_name);// +
+                             //" (joined: " + user.getWhen(time) + ")");
         if (user.default_profile_image) {
             imgProfile.setImageResource(R.drawable.profile_default);
         }
