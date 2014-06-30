@@ -176,7 +176,7 @@ public class StreamActivity
             break;
         case (R.id.miLogout):
             Log.d("DEBUG", "Logout menu button pressed");
-            authInfo.clearAuth();
+            authInfo.clearSession();
             saveAuth();
             this.finish();
             break;
