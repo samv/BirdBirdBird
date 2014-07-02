@@ -76,7 +76,7 @@ Week 4 Stories:
 
   * ☐ Advanced: Robust error handling, check if internet is available, handle error cases, network failures
 
-  * ☐ Advanced: When a network request is sent, user sees an indeterminate progress indicator
+  * ☑ Advanced: When a network request is sent, user sees an indeterminate progress indicator
 
   * ☐ Advanced: User can "reply" to any tweet on their home timeline
 

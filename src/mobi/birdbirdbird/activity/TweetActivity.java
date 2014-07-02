@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,6 +47,7 @@ public class TweetActivity extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS); 
         setContentView(R.layout.activity_tweet);
 
         loadAuth();
@@ -57,10 +59,12 @@ public class TweetActivity extends Activity
         Intent i = new Intent();
         i.putExtra("tweet_id", rs.id_str);
         setResult(RESULT_OK, i);
+        setProgressBarIndeterminateVisibility(false); 
         this.finish();
     }
 
     public void onRestFailure(Exception e) {
+        setProgressBarIndeterminateVisibility(false); 
         Toast.makeText
             (this, "Error during API call: " + e.toString(),
              Toast.LENGTH_LONG).show();
@@ -70,7 +74,7 @@ public class TweetActivity extends Activity
         twitterApi = new TwitterApi(authInfo);
         Twitter.Tweet status = new Twitter.Tweet();
         status.text = etTweetText.getText().toString();
-
+        setProgressBarIndeterminateVisibility(true); 
         twitterApi.postTweet(TwitterApi.STATUS_UPDATE, status, this);
     }
 

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import mobi.birdbirdbird.R;
@@ -48,6 +49,7 @@ public class LoginActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS); 
         setContentView(R.layout.activity_login);
 
         Log.d("DEBUG", "LoginActivity.onCreate()");
@@ -56,7 +58,7 @@ public class LoginActivity
         btnLogin.setOnClickListener(this);
 
         loadAuth();
-                
+
         if (authInfo.haveUser()) {
             // already have a token, so skip to the stream
             Log.d("DEBUG", "Already logged in, skipping to stream!");
@@ -96,11 +98,13 @@ public class LoginActivity
         loginTask = new TwitterOaLoginTask(this);
         Log.d("DEBUG", "Starting new loginTask");
         authInfo.clearSession();
+        setProgressBarIndeterminateVisibility(true); 
         loginTask.execute(authInfo);
     }
 
     // TwitterOaLoginTask.Callbacks
     public void onOaLoginFailure(Exception e) {
+        setProgressBarIndeterminateVisibility(false); 
         Toast.makeText
             (this, "OAuth Failure: " + e.toString(), Toast.LENGTH_LONG)
             .show();
@@ -112,6 +116,7 @@ public class LoginActivity
     }
 
     public void onRestFailure(Exception e) {
+        setProgressBarIndeterminateVisibility(false); 
         Toast.makeText
             (this, "Error during API call: " + e.toString(),
              Toast.LENGTH_LONG).show();
@@ -122,6 +127,7 @@ public class LoginActivity
     }
 
     public void onOaLoginProgress(String message) {
+        setProgressBarIndeterminateVisibility(true); 
         Log.d("DEBUG", "LoginActivity.onOaLoginProgress('" + message + "')");
     }
 
@@ -161,6 +167,7 @@ public class LoginActivity
 	}
 
     private void getUser() {
+        setProgressBarIndeterminateVisibility(true); 
         TwitterApi twitterApi = new TwitterApi(authInfo);
         twitterApi.getUser(TwitterApi.ACCOUNT_VERIFY, this);
     }
@@ -185,6 +192,7 @@ public class LoginActivity
                 Log.d("DEBUG", "no access token, checking intent");
                 Uri uri = getIntent().getData();
                 if (uri != null) {
+                    setProgressBarIndeterminateVisibility(true); 
                     Log.d("DEBUG", "found URI intent: " + uri);
                     authInfo.setAuthUri(uri);
                     saveAuth();
@@ -197,6 +205,7 @@ public class LoginActivity
 	}
 
     public void openStream() {
+        setProgressBarIndeterminateVisibility(false); 
     	Intent i = new Intent(this, StreamActivity.class);
     	startActivity(i);
     }

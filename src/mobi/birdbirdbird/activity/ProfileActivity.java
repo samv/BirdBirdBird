@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -57,6 +58,7 @@ public class ProfileActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS); 
         setContentView(R.layout.activity_profile);
 
         time = (new Date()).getTime();
@@ -68,6 +70,7 @@ public class ProfileActivity
 
         createProfileTweetsFragment();
 
+        setProgressBarIndeterminateVisibility(true); 
         getTwitterApi().getUser
             (TwitterApi.USERS_SHOW, user.id_str, null, this);
     }
@@ -107,11 +110,13 @@ public class ProfileActivity
     }
 
     public void onRestResponse(Twitter.User user) {
+        setProgressBarIndeterminateVisibility(false); 
         this.user = user;
         setUser(user);
     }
 
     public void onRestFailure(Exception e) {
+        setProgressBarIndeterminateVisibility(false); 
         Toast.makeText
             (this, "Error during API call: " + e.toString(),
              Toast.LENGTH_LONG).show();

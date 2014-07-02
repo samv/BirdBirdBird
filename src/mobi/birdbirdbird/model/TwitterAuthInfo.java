@@ -48,8 +48,8 @@ public class TwitterAuthInfo {
     }
 
     private void _secrets() {
-        consumerKey = "TZk5fZQx8GhzmtzInELzcZguD";
-        consumerSecret = "j40Rl3Ut1zK67ebyPqO3Zk8sF018ELLBUNXnlsYEX3rMewl462";
+        consumerKey = "5OqxNHdg34QuTR7jkuTV503qT";
+        consumerSecret = "SFFr5xf5teivxv3cG2DABral8nyd2NHrKFXHZRUZxxcVF5PwHn";
     }
 
     public TwitterAuthInfo(SharedPreferences prefs) {
@@ -197,6 +197,8 @@ public class TwitterAuthInfo {
     }
 
     public OAuthService getService() {
+        Log.d("DEBUG", "Creating new service with key = " + consumerKey + 
+              ", secret = " + consumerSecret + ", callback URL = " + callbackUrl);
         return new ServiceBuilder()
             .provider(org.scribe.builder.api.TwitterApi.class)
             .apiKey(consumerKey)
